@@ -2,24 +2,27 @@
 
 #define RAM_SIZE_MASK 0x7FF
 
-Ram::Ram()
+namespace nesco
 {
-}
+    Ram::Ram()
+    {
+    }
 
-Ram::~Ram()
-{
-}
+    Ram::~Ram()
+    {
+    }
 
-uint8_t Ram::read(uint16_t addr)
-{
-    return mem[addr & RAM_SIZE_MASK];
-}
+    uint8_t Ram::read(uint16_t addr)
+    {
+        return mem[addr & RAM_SIZE_MASK];
+    }
 
-void Ram::write(uint16_t addr, uint8_t data)
-{
-    mem[addr & RAM_SIZE_MASK] = data;
-}
+    void Ram::write(uint16_t addr, uint8_t data)
+    {
+        mem[addr & RAM_SIZE_MASK] = data;
+    }
 
-void Ram::reset()
-{
-}
+    void Ram::reset()
+    {
+    }
+};

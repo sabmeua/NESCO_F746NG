@@ -1,21 +1,24 @@
 #include "Emu.h"
 
-Emu::Emu()
+namespace nesco
 {
-    ram = new Ram();
-    cpu = new Cpu(ram);
-}
+    Emu::Emu()
+    {
+        ram = new Ram();
+        cpu = new Cpu(ram);
+    }
 
-Emu::~Emu()
-{
-    delete cpu;
-    delete ram;
-}
+    Emu::~Emu()
+    {
+        delete cpu;
+        delete ram;
+    }
 
-void Emu::run()
-{
-}
+    void Emu::run()
+    {
+    }
 
-void Emu::reset()
-{
-}
+    void Emu::reset()
+    {
+    }
+};
