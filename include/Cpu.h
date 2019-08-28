@@ -2,12 +2,20 @@
 #define NESCO_CPU_H
 
 #include <cstdint>
+#include "Ram.h"
 
 class Cpu
 {
 public:
-    Cpu();
+    Cpu(Ram *_ram);
     ~Cpu();
+
+    void reset();
+    void exec();
+
+    // Stack operations
+    void push(uint8_t value);
+    uint8_t pop();
 
 private:
     // Registers
@@ -18,6 +26,7 @@ private:
     uint16_t PC;
 
     uint8_t flags;
+    Ram *ram;
 };
 
 #endif
