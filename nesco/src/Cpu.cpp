@@ -24,8 +24,16 @@ namespace nesco
         }
 
         uint8_t opcode = fetch();
-        if (true/* exec command here */) {
+
+        if (execOpImplied(opcode) ||
+            execOpBranch(opcode) ||
+            execOp00(opcode) ||
+            execOp01(opcode) ||
+            execOp10(opcode))
+        {
             skipCycle = OpCycles[opcode];
+        } else {
+            // implement! abort & logging
         }
 
         ++PC;
@@ -46,5 +54,30 @@ namespace nesco
     uint8_t Cpu::fetch()
     {
         return ram->read(PC);
+    }
+
+    bool Cpu::execOpImplied(uint8_t opcode)
+    {
+        return false;
+    }
+
+    bool Cpu::execOpBranch(uint8_t opcode)
+    {
+        return false;
+    }
+
+    bool Cpu::execOp00(uint8_t opcode)
+    {
+        return false;
+    }
+
+    bool Cpu::execOp01(uint8_t opcode)
+    {
+        return false;
+    }    
+
+    bool Cpu::execOp10(uint8_t opcode)
+    {
+        return false;
     }
 };

@@ -31,6 +31,12 @@ namespace nesco
         void exec();
         uint8_t fetch();
 
+        bool execOpImplied(uint8_t opcode);
+        bool execOpBranch(uint8_t opcode);
+        bool execOp00(uint8_t opcode);
+        bool execOp01(uint8_t opcode);
+        bool execOp10(uint8_t opcode);
+
         // Stack operations
         void push(uint8_t value);
         uint8_t pop();
