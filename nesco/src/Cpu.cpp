@@ -1,4 +1,5 @@
 #include "Cpu.h"
+#include "CpuOpcodes.h"
 
 namespace nesco
 {
