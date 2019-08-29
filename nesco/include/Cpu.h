@@ -41,6 +41,14 @@ namespace nesco
         uint8_t Y;      // Index register 2
         uint8_t SP;     // Stack pointer
         uint8_t P;      // Status register
+                        // bit 0:C carry flag
+                        //     1:Z zero flag
+                        //     2:I IRQ flag
+                        //     3:D decimal flag
+                        //     4:B break flag
+                        //     5:. reserved
+                        //     6:V overflow flag
+                        // bit 7:N negative flag
         uint16_t PC;    // Program counter
 
         Ram *ram;
