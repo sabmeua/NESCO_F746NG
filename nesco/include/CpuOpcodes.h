@@ -119,7 +119,7 @@ namespace nesco
         BEQ = 0xF0,     // branch on Z=1
     };
 
-    uint8_t Opcycles[0x100] = {
+    uint8_t OpCycles[0x100] = {
         /*      x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 xA xB xC xD xE xF */    
         /* 0x */ 7, 6, 0, 8, 3, 3, 5, 5, 3, 2, 2, 2, 4, 4, 6, 6,
         /* 1x */ 2, 5, 0, 8, 4, 4, 6, 6, 2, 4, 2, 7, 4, 4, 7, 7,

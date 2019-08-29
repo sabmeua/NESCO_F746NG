@@ -29,6 +29,7 @@ namespace nesco
 
         void reset();
         void exec();
+        uint8_t fetch();
 
         // Stack operations
         void push(uint8_t value);
@@ -52,6 +53,7 @@ namespace nesco
         uint16_t PC;    // Program counter
 
         Ram *ram;
+        uint8_t skipCycle;
     };
 };
 
