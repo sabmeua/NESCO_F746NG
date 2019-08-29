@@ -40,9 +40,9 @@ namespace nesco
         uint8_t X;      // Index register 1
         uint8_t Y;      // Index register 2
         uint8_t SP;     // Stack pointer
+        uint8_t P;      // Status register
         uint16_t PC;    // Program counter
 
-        uint8_t flags;
         Ram *ram;
     };
 };
