@@ -61,6 +61,18 @@ namespace nesco
         Ram *ram;
         uint8_t skipCycle;
     };
+
+    enum StatusFlag
+    {
+        CarryFlag    = 0x01,
+        ZeroFlag     = 0x02,
+        IrqFlag      = 0x04,
+        DecimalFlag  = 0x08,
+        BreakFlag    = 0x10,
+        OverflowFlag = 0x40,
+        NegativeFlag = 0x80,
+    };
+
 };
 
 #endif
