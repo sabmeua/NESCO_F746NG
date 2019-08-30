@@ -3,9 +3,9 @@
 
 namespace nesco
 {
-    Cpu::Cpu(Ram *_ram)
+    Cpu::Cpu(CpuBus *_bus)
     {
-        ram = ram;
+        bus = bus;
         skipCycle = 0;
     }
 
@@ -38,19 +38,29 @@ namespace nesco
         }
     }
 
+    void Cpu::write(uint16_t addr, uint8_t data)
+    {
+        bus->write(addr, data);
+    }
+
+    uint8_t Cpu::read(uint16_t addr)
+    {
+        return bus->read(addr);
+    }
+
     void Cpu::push(uint8_t value)
     {
-        ram->write(0x100 | SP--, value);
+        write(0x100 | SP--, value);
     }
 
     uint8_t Cpu::pop()
     {
-        return ram->read(0x100 | ++SP);
+        return read(0x100 | ++SP);
     }
 
     uint8_t Cpu::fetch()
     {
-        return ram->read(PC++);
+        return read(PC++);
     }
 
     bool Cpu::execOpImplied(uint8_t opcode)

@@ -2,7 +2,7 @@
 #define NESCO_CPU_H
 
 #include <cstdint>
-#include "Ram.h"
+#include "CpuBus.h"
 
 namespace nesco
 {
@@ -24,22 +24,11 @@ namespace nesco
     class Cpu
     {
     public:
-        Cpu(Ram *_ram);
+        Cpu(CpuBus *_bus);
         ~Cpu();
 
         void reset();
         void exec();
-        uint8_t fetch();
-
-        bool execOpImplied(uint8_t opcode);
-        bool execOpBranch(uint8_t opcode);
-        bool execOp00(uint8_t opcode);
-        bool execOp01(uint8_t opcode);
-        bool execOp10(uint8_t opcode);
-
-        // Stack operations
-        void push(uint8_t value);
-        uint8_t pop();
 
     private:
         // Registers
@@ -58,9 +47,23 @@ namespace nesco
                         // bit 7:N negative flag
         uint16_t PC;    // Program counter
 
-        Ram *ram;
+        CpuBus *bus;
         uint8_t skipCycle;
         uint8_t exCycle;
+
+        bool execOpImplied(uint8_t opcode);
+        bool execOpBranch(uint8_t opcode);
+        bool execOp00(uint8_t opcode);
+        bool execOp01(uint8_t opcode);
+        bool execOp10(uint8_t opcode);
+
+        // Stack operations
+        void push(uint8_t value);
+        uint8_t pop();
+
+        uint8_t fetch();
+        uint8_t read(uint16_t addr);
+        void write(uint16_t addr, uint8_t data);
     };
 
     enum StatusFlag

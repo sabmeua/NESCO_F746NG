@@ -3,6 +3,7 @@
 
 #include "Cpu.h"
 #include "Ram.h"
+#include "CpuBus.h"
 
 namespace nesco
 {
@@ -17,6 +18,7 @@ namespace nesco
 
     private:
         Cpu *cpu;
+        CpuBus *cpubus;
         Ram *ram;
     };
 };

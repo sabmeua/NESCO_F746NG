@@ -5,11 +5,13 @@ namespace nesco
     Emu::Emu()
     {
         ram = new Ram();
-        cpu = new Cpu(ram);
+        cpubus = new CpuBus(ram);
+        cpu = new Cpu(cpubus);
     }
 
     Emu::~Emu()
     {
+        delete cpubus;
         delete cpu;
         delete ram;
     }
