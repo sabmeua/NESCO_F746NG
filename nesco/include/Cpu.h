@@ -60,6 +60,7 @@ namespace nesco
 
         Ram *ram;
         uint8_t skipCycle;
+        uint8_t exCycle;
     };
 
     enum StatusFlag
