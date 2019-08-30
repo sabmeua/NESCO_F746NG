@@ -28,6 +28,7 @@ namespace nesco
 
         if (execOpImplied(opcode) ||
             execOpBranch(opcode) ||
+            execOpOthers(opcode) ||
             execOp00(opcode) ||
             execOp01(opcode) ||
             execOp10(opcode))
@@ -46,6 +47,11 @@ namespace nesco
     uint8_t Cpu::read(uint16_t addr)
     {
         return bus->read(addr);
+    }
+
+    uint16_t Cpu::readWord(uint16_t addr)
+    {
+        return read(addr) | (read(addr + 1) << 8);
     }
 
     void Cpu::push(uint8_t value)
@@ -67,28 +73,45 @@ namespace nesco
     {
         switch (static_cast<OpcodeSet_Implied>(opcode)) {
             case BRK:
+            {
+                bool interrupt = P & IrqFlag;
+                PC++;
+                push((PC >> 8) & 0xFF);
+                push(PC & 0xFF);
+                P |= BreakFlag;
+                push(P);
+                P |= IrqFlag;
+                if (!interrupt) {
+                    PC = readWord(0xFFFE);
+                }
+                PC--;
                 break;
+            }
             case PHP:
+                P |= BreakFlag;
+                push(P);
                 break;
             case CLC:
-                break;
-            case JSR:
+                P &= ~CarryFlag;
                 break;
             case PLP:
                 break;
             case SEC:
+                P |= CarryFlag;
                 break;
             case RTI:
                 break;
             case PHA:
                 break;
             case CLI:
+                P &= ~IrqFlag;
                 break;
             case RTS:
                 break;
             case PLA:
                 break;
             case SEI:
+                P |= IrqFlag;
                 break;
             case DEY:
                 break;
@@ -103,20 +126,29 @@ namespace nesco
             case TAX:
                 break;
             case CLV:
+                P &= ~OverflowFlag;
                 break;
             case TSX:
+                Y = (Y + 1) & 0xFF;
+                P = (~NegativeFlag & P) | (NegativeFlag & Y);
+                P = (~ZeroFlag & P) | (!Y * ZeroFlag);
                 break;
             case INY:
                 break;
             case DEX:
                 break;
             case CLD:
+                P &= ~DecimalFlag;
                 break;
             case INX:
+                X = (X + 1) & 0xFF;
+                P = (~NegativeFlag & P) | (NegativeFlag & X);
+                P = (~ZeroFlag & P) | (!X * ZeroFlag);
                 break;
             case NOP:
                 break;
             case SED:
+                P |= DecimalFlag;
                 break;
             default:
                 return false;
@@ -164,6 +196,26 @@ namespace nesco
         if (branch) {
             PC = addr;
             exCycle += 1;
+        }
+
+        return true;
+    }
+
+
+    bool Cpu::execOpOthers(uint8_t opcode)
+    {
+        switch (static_cast<OpcodeSet_Others>(opcode)) {
+            case JSR:
+            {
+                uint16_t addr = readWord(PC);
+                uint16_t pc = PC - 1;
+                push((pc >> 8) & 0xFF);
+                push(pc & 0xFF);
+                PC = addr;
+                break;
+            }
+            default:
+                return false;
         }
 
         return true;

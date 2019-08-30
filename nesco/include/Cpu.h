@@ -53,6 +53,7 @@ namespace nesco
 
         bool execOpImplied(uint8_t opcode);
         bool execOpBranch(uint8_t opcode);
+        bool execOpOthers(uint8_t opcode);
         bool execOp00(uint8_t opcode);
         bool execOp01(uint8_t opcode);
         bool execOp10(uint8_t opcode);
@@ -63,6 +64,7 @@ namespace nesco
 
         uint8_t fetch();
         uint8_t read(uint16_t addr);
+        uint16_t readWord(uint16_t addr);
         void write(uint16_t addr, uint8_t data);
     };
 

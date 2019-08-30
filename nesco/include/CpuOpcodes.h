@@ -80,7 +80,6 @@ namespace nesco
         BRK = 0x00,     // (SP)-- := PC; (SP)-- := P; PC := ($FFFE)
         PHP = 0x08,     // (SP)-- := P
         CLC = 0x18,     // C := 0
-        JSR = 0x20,     // (SP)-- := PC; PC := {adr}
         PLP = 0x28,     // P := ++(SP)
         SEC = 0x38,     // C := 1
         RTI = 0x40,     // P := ++(SP) ; PC := ++(SP)
@@ -118,6 +117,14 @@ namespace nesco
         BCS = 0xB0,     // branch on C=1
         BNE = 0xD0,     // branch on Z=0
         BEQ = 0xF0,     // branch on Z=1
+    };
+
+    /**
+     * Opcode Set others
+     */
+    enum OpcodeSet_Others
+    {
+        JSR = 0x20,     // (SP)-- := PC; PC := {adr}
     };
 
     uint8_t OpCycles[0x100] = {
