@@ -8,18 +8,19 @@ namespace nesco
      */
     enum AddressingMode
     {
+        Immediate  = 0x00,  // #$00
+        Accumlator = 0x00,  // A << 1
+        IndirectX  = 0x00,  // ($00,X)
+        ZeroPage   = 0x04,  // $00
+        Absolute   = 0x0C,  // $0000
+        IndirectY  = 0x10,  // ($00),Y
+        ZeropageX  = 0x14,  // $00,X
+        ZeropageY  = 0x16,  // $00,Y
+        AbsoluteY  = 0x18,  // $0000,Y
+        AbsoluteX  = 0x1C,  // $0000,X
+        Indirect   = 0x2C,  // ($0000)
         Implied,            // implied in command
         Relative,           // PC relative
-        Immediate = 0x00,   // #$00
-        IndirectX = 0x00,   // ($00,X)
-        ZeroPage  = 0x04,   // $00
-        Absolute  = 0x0C,   // $0000
-        IndirectY = 0x10,   // ($00),Y
-        ZeropageX = 0x14,   // $00,X
-        ZeropageY = 0x16,   // $00,Y
-        AbsoluteY = 0x18,   // $0000,Y
-        AbsoluteX = 0x1C,   // $0000,X
-        Indirect  = 0x2C,   // ($0000)
     };
 
     /**
