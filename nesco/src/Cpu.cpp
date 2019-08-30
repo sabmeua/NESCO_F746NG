@@ -36,19 +36,17 @@ namespace nesco
             // implement! abort & logging
         }
 
-        ++PC;
+        PC += 1;
     }
 
     void Cpu::push(uint8_t value)
     {
-        ram->write(0x100 | SP, value);
-        --SP;
+        ram->write(0x100 | SP--, value);
     }
 
     uint8_t Cpu::pop()
     {
-        ++SP;
-        return ram->read(0x100 | SP);
+        return ram->read(0x100 | ++SP);
     }
 
     uint8_t Cpu::fetch()
