@@ -21,6 +21,17 @@ namespace nesco
      *
      */
 
+    enum StatusFlag
+    {
+        CarryFlag    = 0x01,
+        ZeroFlag     = 0x02,
+        IrqFlag      = 0x04,
+        DecimalFlag  = 0x08,
+        BreakFlag    = 0x10,
+        OverflowFlag = 0x40,
+        NegativeFlag = 0x80,
+    };
+
     class Cpu
     {
     public:
@@ -61,22 +72,18 @@ namespace nesco
         // Stack operations
         void push(uint8_t value);
         uint8_t pop();
+        void pushWord(uint16_t value);
+        uint16_t popWord();
 
         uint8_t fetch();
         uint8_t read(uint16_t addr);
         uint16_t readWord(uint16_t addr);
         void write(uint16_t addr, uint8_t data);
-    };
 
-    enum StatusFlag
-    {
-        CarryFlag    = 0x01,
-        ZeroFlag     = 0x02,
-        IrqFlag      = 0x04,
-        DecimalFlag  = 0x08,
-        BreakFlag    = 0x10,
-        OverflowFlag = 0x40,
-        NegativeFlag = 0x80,
+        void setFlag(StatusFlag flag);
+        void setFlag(StatusFlag flag, uint8_t value);
+        void setFlagNZ(uint8_t value);
+        void clearFlag(StatusFlag flag);
     };
 
 };

@@ -64,9 +64,43 @@ namespace nesco
         return read(0x100 | ++SP);
     }
 
+    void Cpu::pushWord(uint16_t value)
+    {
+        push((value >> 8) & 0xFF);
+        push(value & 0xFF);
+    }
+
+    uint16_t Cpu::popWord()
+    {
+        uint16_t value = pop();
+        value |= pop() << 8;
+        return value;
+    }
+
     uint8_t Cpu::fetch()
     {
         return read(PC++);
+    }
+
+    void Cpu::setFlag(StatusFlag flag)
+    {
+        P |= flag;
+    }
+
+    void Cpu::clearFlag(StatusFlag flag)
+    {
+        P &= ~flag;
+    }
+
+    void Cpu::setFlag(StatusFlag flag, uint8_t value)
+    {
+        P = (flag & value) | (~flag | P);
+    }
+
+    void Cpu::setFlagNZ(uint8_t value)
+    {
+        setFlag(NegativeFlag, value);
+        setFlag(ZeroFlag, !value * ZeroFlag);
     }
 
     bool Cpu::execOpImplied(uint8_t opcode)
@@ -76,11 +110,10 @@ namespace nesco
             {
                 bool interrupt = P & IrqFlag;
                 PC++;
-                push((PC >> 8) & 0xFF);
-                push(PC & 0xFF);
-                P |= BreakFlag;
+                pushWord(PC);
+                setFlag(BreakFlag);
                 push(P);
-                P |= IrqFlag;
+                setFlag(IrqFlag);
                 if (!interrupt) {
                     PC = readWord(0xFFFE);
                 }
@@ -88,67 +121,87 @@ namespace nesco
                 break;
             }
             case PHP:
-                P |= BreakFlag;
                 push(P);
                 break;
             case CLC:
-                P &= ~CarryFlag;
+                clearFlag(CarryFlag);
                 break;
             case PLP:
+                P = pop();
                 break;
             case SEC:
-                P |= CarryFlag;
+                setFlag(CarryFlag);
                 break;
             case RTI:
+                P = pop();
+                PC = popWord();
                 break;
             case PHA:
+                push(A);
                 break;
             case CLI:
-                P &= ~IrqFlag;
+                clearFlag(IrqFlag);
                 break;
             case RTS:
+                PC = popWord();
+                PC++;
                 break;
             case PLA:
+                A = pop();
+                setFlagNZ(A);
                 break;
             case SEI:
-                P |= IrqFlag;
+                setFlag(IrqFlag);
                 break;
             case DEY:
+                Y = (Y - 1) & 0xFF;
+                setFlagNZ(Y);
                 break;
             case TXA:
+                A = X;
+                setFlagNZ(A);
                 break;
             case TYA:
+                A = Y;
+                setFlagNZ(Y);
                 break;
             case TXS:
+                SP = X;
                 break;
             case TAY:
+                Y = A;
+                setFlagNZ(Y);
                 break;
             case TAX:
+                X = A;
+                setFlagNZ(X);
                 break;
             case CLV:
-                P &= ~OverflowFlag;
+                clearFlag(OverflowFlag);
                 break;
             case TSX:
-                Y = (Y + 1) & 0xFF;
-                P = (~NegativeFlag & P) | (NegativeFlag & Y);
-                P = (~ZeroFlag & P) | (!Y * ZeroFlag);
+                X = SP;
+                setFlagNZ(X);
                 break;
             case INY:
+                Y = (Y + 1) & 0xFF;
+                setFlagNZ(Y);
                 break;
             case DEX:
+                X = (X - 1) & 0xFF;
+                setFlagNZ(X);
                 break;
             case CLD:
-                P &= ~DecimalFlag;
+                clearFlag(DecimalFlag);
                 break;
             case INX:
                 X = (X + 1) & 0xFF;
-                P = (~NegativeFlag & P) | (NegativeFlag & X);
-                P = (~ZeroFlag & P) | (!X * ZeroFlag);
+                setFlagNZ(X);
                 break;
             case NOP:
                 break;
             case SED:
-                P |= DecimalFlag;
+                setFlag(DecimalFlag);
                 break;
             default:
                 return false;
@@ -208,9 +261,7 @@ namespace nesco
             case JSR:
             {
                 uint16_t addr = readWord(PC);
-                uint16_t pc = PC - 1;
-                push((pc >> 8) & 0xFF);
-                push(pc & 0xFF);
+                pushWord(PC - 1);
                 PC = addr;
                 break;
             }
