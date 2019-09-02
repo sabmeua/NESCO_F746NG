@@ -278,20 +278,64 @@ namespace nesco
             return false;
         }
 
+
         AddressingMode mode = static_cast<AddressingMode>(opcode & 0x1C);
+        uint16_t addr;
+        switch (mode) {
+            case Immediate:
+                addr = PC++;
+                break;
+            case Zeropage:
+                addr = read(PC++);
+                break;
+            case Absolute:
+                addr = readWord(PC);
+                PC += 2;
+                break;
+            case ZeropageX:
+                addr = (read(PC++) + X) & 0xff;
+                break;
+            case Indirect:
+                addr = readWord(PC) + X;
+                PC += 2;
+                break;
+            default:
+                return false;
+        }
+
         switch (static_cast<OpcodeSet_00>(opcode & 0xE0)) {
             case BIT:
+            {
+                uint8_t data = read(addr);
+                setFlag(ZeroFlag, !(A & data) * ZeroFlag);
+                setFlag(OverflowFlag, data);
+                setFlag(NegativeFlag, data);
                 break;
+            }
             case JMP:
+                PC = addr;
                 break;
             case STY:
+                write(addr, Y);
                 break;
             case LDY:
+                Y = read(addr);
+                setFlagNZ(Y);
                 break;
             case CPY:
+            {
+                uint16_t cmp = Y - read(addr);
+                setFlag(CarryFlag, (cmp > 0) * CarryFlag);
+                setFlagNZ(cmp);
                 break;
+            }
             case CPX:
+            {
+                uint16_t cmp = X - read(addr);
+                setFlag(CarryFlag, (cmp > 0) * CarryFlag);
+                setFlagNZ(cmp);
                 break;
+            }
             default:
                 return false;
         }
@@ -305,7 +349,6 @@ namespace nesco
             return false;
         }
 
-        AddressingMode mode = static_cast<AddressingMode>(opcode & 0x1C);
         switch (static_cast<OpcodeSet_01>(opcode & 0xE0)) {
             case ORA:
                 break;

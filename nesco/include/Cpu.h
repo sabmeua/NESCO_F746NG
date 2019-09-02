@@ -75,11 +75,13 @@ namespace nesco
         void pushWord(uint16_t value);
         uint16_t popWord();
 
+        // IO methods
         uint8_t fetch();
         uint8_t read(uint16_t addr);
         uint16_t readWord(uint16_t addr);
         void write(uint16_t addr, uint8_t data);
 
+        // Status register operations
         void setFlag(StatusFlag flag);
         void setFlag(StatusFlag flag, uint8_t value);
         void setFlagNZ(uint8_t value);

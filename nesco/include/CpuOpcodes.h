@@ -11,7 +11,7 @@ namespace nesco
         Immediate  = 0x00,  // #$00
         Accumlator = 0x00,  // A << 1
         IndirectX  = 0x00,  // ($00,X)
-        ZeroPage   = 0x04,  // $00
+        Zeropage   = 0x04,  // $00
         Absolute   = 0x0C,  // $0000
         IndirectY  = 0x10,  // ($00),Y
         ZeropageX  = 0x14,  // $00,X
