@@ -3,21 +3,20 @@
 
 #include <cstdint>
 
-#define RAM_SIZE 0x800
-
 namespace nesco
 {
     class Ram
     {
     public:
-        Ram();
+        Ram(uint16_t size);
         ~Ram();
         uint8_t read(uint16_t addr);
         void write(uint16_t addr, uint8_t data);
         void reset();
 
     private:
-        uint8_t mem[RAM_SIZE];
+        uint16_t size;
+        uint8_t *mem;
     };
 };
 

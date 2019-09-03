@@ -4,7 +4,7 @@ namespace nesco
 {
     Emu::Emu()
     {
-        ram = new Ram();
+        ram = new Ram(0x800);
         cpubus = new CpuBus(ram);
         cpu = new Cpu(cpubus);
         ppu = new Ppu();
