@@ -9,7 +9,8 @@ namespace nesco
     /**
      * Memory map
      *
-     * $0000 - $07FF	RAM
+     * $0000 - $07FF	RAM 2Kbytes
+     *   # $01A0-$01FF	Stack 96 bytes
      * $0800 - $1FFF	Unused (mirrored $0000-$07FF)
      * $2000 - $2007	I/O (PPU)
      * $2008 - $3FFF	Unused (mirrored $2000-$2007)
@@ -20,6 +21,11 @@ namespace nesco
      * $C000 - $FFFF	Program ROM-High
      *
      */
+    #define RESET_VECTOR    0xFFFC
+    #define NMI_VECTOR      0xFFFA
+    #define IRQ_VECTOR      0xFFFE
+    #define SP_BASE         0x00FD
+    #define SP_OFFSET       0x0100  // Accessing stack as "SP | SP_OFFSET"
 
     enum StatusFlag
     {
@@ -31,6 +37,7 @@ namespace nesco
         OverflowFlag = 0x40,
         NegativeFlag = 0x80,
     };
+    #define INITIAL_STATUS 0x34
 
     class Cpu
     {

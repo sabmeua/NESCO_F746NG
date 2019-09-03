@@ -15,6 +15,12 @@ namespace nesco
 
     void Cpu::reset()
     {
+        skipCycle = 0;
+        exCycle = 0;
+        A = X = Y = 0;
+        P = INITIAL_STATUS;
+        SP = SP_BASE;
+        PC = RESET_VECTOR;
     }
 
     void Cpu::exec()
@@ -56,12 +62,12 @@ namespace nesco
 
     void Cpu::push(uint8_t value)
     {
-        write(0x100 | SP--, value);
+        write(SP_OFFSET | SP--, value);
     }
 
     uint8_t Cpu::pop()
     {
-        return read(0x100 | ++SP);
+        return read(SP_OFFSET | ++SP);
     }
 
     void Cpu::pushWord(uint16_t value)
