@@ -5,19 +5,22 @@
 #include "Ppu.h"
 #include "Ram.h"
 #include "CpuBus.h"
+#include "EmuDevice.h"
 
 namespace nesco
 {
     class Emu
     {
     public:
-        Emu();
+        Emu(EmuDevice &_dev);
         ~Emu();
     
         void run();
         void reset();
 
     private:
+        EmuDevice &dev;
+
         Cpu *cpu;
         Ppu *ppu;
         CpuBus *cpubus;

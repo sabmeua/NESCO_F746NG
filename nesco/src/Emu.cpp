@@ -2,7 +2,7 @@
 
 namespace nesco
 {
-    Emu::Emu()
+    Emu::Emu(EmuDevice &_dev) : dev(_dev)
     {
         ram = new Ram(0x800);
         cpubus = new CpuBus(ram);
@@ -15,6 +15,7 @@ namespace nesco
         delete cpubus;
         delete cpu;
         delete ram;
+        delete ppu;
     }
 
     void Emu::run()
@@ -24,6 +25,7 @@ namespace nesco
 
     void Emu::reset()
     {
+        dev.reset();
         cpu->reset();
         ppu->reset();
     }
