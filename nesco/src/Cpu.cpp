@@ -453,7 +453,7 @@ namespace nesco
         }
 
         AddressingMode mode = static_cast<AddressingMode>(opcode & ADDR_MODE_MASK);
-        uint16_t addr;
+        uint16_t addr = 0;
         // irregular pattern
         if (opcode == LDX_ABS_Y) {
             mode = AbsoluteY;
