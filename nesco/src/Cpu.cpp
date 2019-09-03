@@ -95,15 +95,20 @@ namespace nesco
         P &= ~flag;
     }
 
-    void Cpu::setFlag(StatusFlag flag, uint8_t value)
+    void Cpu::setFlag(StatusFlag flag, bool value)
     {
-        P = (flag & value) | (~flag | P);
+        P = (flag * static_cast<uint8_t>(value)) | (~flag | P);
     }
 
     void Cpu::setFlagNZ(uint8_t value)
     {
-        setFlag(NegativeFlag, value);
-        setFlag(ZeroFlag, !value * ZeroFlag);
+        setFlag(NegativeFlag, value & NegativeFlag);
+        setFlag(ZeroFlag, value == 0);
+    }
+
+    bool Cpu::getFlag(StatusFlag flag)
+    {
+        return P & flag;
     }
 
     bool Cpu::execOpImplied(uint8_t opcode)
@@ -300,7 +305,8 @@ namespace nesco
                 return false;
         }
 
-        switch (static_cast<OpcodeSet_00>(opcode & COMMAND_MASK)) {
+        OpcodeSet_00 comm = static_cast<OpcodeSet_00>(opcode & COMMAND_MASK);
+        switch (comm) {
             case BIT:
             {
                 uint8_t data = read(addr);
@@ -379,23 +385,54 @@ namespace nesco
                 return false;
         }
 
-        switch (static_cast<OpcodeSet_01>(opcode & COMMAND_MASK)) {
+        OpcodeSet_01 comm = static_cast<OpcodeSet_01>(opcode & COMMAND_MASK);
+        switch (comm) {
             case ORA:
+                A |= read(addr);
+                setFlagNZ(A);
                 break;
             case AND:
+                A &= read(addr);
+                setFlagNZ(A);
                 break;
             case EOR:
+                A ^= read(addr);
+                setFlagNZ(A);
                 break;
             case ADC:
+            {
+                uint8_t data = read(addr);
+                uint16_t sum = A + data + getFlag(CarryFlag);
+                setFlag(CarryFlag, (sum & 0x0100) >> 8);
+                setFlag(OverflowFlag, (A ^ sum) & (data ^ sum) & 0xFF);
+                A = sum & 0xFF;
+                setFlagNZ(A);
                 break;
+            }
             case STA:
+                write(addr, A);
                 break;
             case LDA:
+                A = read(addr);
+                setFlagNZ(A);
                 break;
             case CMP:
+            {
+                uint16_t cmp = A - read(addr);
+                setFlag(CarryFlag,  (!(cmp & 0x0100) >> 8));
+                setFlagNZ(cmp & 0xFF);
                 break;
+            }
             case SBC:
+            {
+                uint16_t data = read(addr);
+                uint16_t sub = A - data - !getFlag(CarryFlag);
+                setFlag(CarryFlag, !(sub & 0x0100) >> 8);
+                setFlag(OverflowFlag, (A ^ sub) & (~data ^ sub) & 0x80);
+                A = sub;
+                setFlagNZ(A);
                 break;
+            }
             default:
                 return false;
         }
@@ -445,35 +482,69 @@ namespace nesco
                 return false;
         }
 
-        switch (static_cast<OpcodeSet_10>(opcode & COMMAND_MASK)) {
+        OpcodeSet_10 comm = static_cast<OpcodeSet_10>(opcode & COMMAND_MASK);
+        switch (comm) {
             case ASL:
-                if (mode == Accumlator) {
-                } else {
-                }
-                break;
             case ROL:
+            {
+                uint8_t carry = 0;
+                if (comm == ROL) {
+                    carry = (P & CarryFlag) / CarryFlag;
+                }
                 if (mode == Accumlator) {
+                    setFlag(CarryFlag, A & 0x80);
+                    A = A << 1 | carry;
+                    setFlagNZ(A);
                 } else {
+                    uint8_t data = read(addr);
+                    setFlag(CarryFlag, data & 0x80);
+                    data = data << 1 | carry;
+                    write(addr, data);
+                    setFlagNZ(data);
                 }
                 break;
+            }
             case LSR:
-                if (mode == Accumlator) {
-                } else {
-                }
-                break;
             case ROR:
+            {
+                uint8_t carry = 0;
+                if (comm == ROR) {
+                    carry = ((P & CarryFlag) / CarryFlag) << 7;
+                }
                 if (mode == Accumlator) {
+                    setFlag(CarryFlag, A & 0x01);
+                    A = A >> 1 | carry;
+                    setFlagNZ(A);
                 } else {
+                    uint8_t data = read(addr);
+                    setFlag(CarryFlag, data & 0x01);
+                    data = data >> 1 | carry;
+                    write(addr, data);
+                    setFlagNZ(data);
                 }
                 break;
+            }
             case STX:
+                write(addr, X);
                 break;
             case LDX:
+                X = read(addr);
+                setFlagNZ(X);
                 break;
             case DEC:
+            {
+                uint8_t data = read(addr) - 1;
+                setFlagNZ(data);
+                write(addr, data);
                 break;
+            }
             case INC:
+            {
+                uint8_t data = read(addr) + 1;
+                setFlagNZ(data);
+                write(addr, data);
                 break;
+            }
             default:
                 return false;
         }

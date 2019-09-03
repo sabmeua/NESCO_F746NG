@@ -85,9 +85,10 @@ namespace nesco
 
         // Status register operations
         void setFlag(StatusFlag flag);
-        void setFlag(StatusFlag flag, uint8_t value);
+        void setFlag(StatusFlag flag, bool value);
         void setFlagNZ(uint8_t value);
         void clearFlag(StatusFlag flag);
+        bool getFlag(StatusFlag flag);
     };
 
 };
