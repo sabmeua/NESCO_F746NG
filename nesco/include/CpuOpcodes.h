@@ -4,29 +4,63 @@
 namespace nesco
 {
     /**
+     * Opcode bit constitution
+     *
+     * MSB 7 6 5 4 3 2 1 0 LSB
+     *    |     |     |   |
+     *       ^     ^    ^
+     *       |     |    |
+     *       |     |    +-- Opcode set group (0x00 ~ 0x10)
+     *       |     |          Dividing three Opcode sets by supported addressing mode.
+     *       |     |
+     *       |     +-- Addressing mode
+     *       |           The patterns cannot be followed with bitmask is below.
+     *       |           * 0x96 : STX Indexed zeropage Y (mask=0x14 -> mode=0x10)
+     *       |           * 0xBE : LDX indexed absolute Y (mask=0x1C -> mode=0x18)
+     *       |
+     *       +-- Command type
+     */
+    #define OPCODE_SET_MASK 0x03
+    #define ADDR_MODE_MASK  0x1C
+    #define COMMAND_MASK    0xE0
+    #define STX_ZPG_Y       0x96
+    #define LDX_ABS_Y       0xBE
+
+    /**
      * Addressing mode
      */
     enum AddressingMode
     {
         Immediate  = 0x00,  // #$00
-        Accumlator = 0x00,  // A << 1
         IndirectX  = 0x00,  // ($00,X)
         Zeropage   = 0x04,  // $00
+        Accumlator = 0x08,  // A << 1
+        Immediate2 = 0x08,  // #$00 for Opcode Set 0x01 group
         Absolute   = 0x0C,  // $0000
+        Indirect   = 0x0C,  // ($0000) for JMP command
         IndirectY  = 0x10,  // ($00),Y
         ZeropageX  = 0x14,  // $00,X
         ZeropageY  = 0x16,  // $00,Y
         AbsoluteY  = 0x18,  // $0000,Y
         AbsoluteX  = 0x1C,  // $0000,X
-        Indirect   = 0x2C,  // ($0000)
         Implied,            // implied in command
         Relative,           // PC relative
     };
 
     /**
      * Opcode Set 0x00
-     * 
+     *
      * opcode & 0x3 == 0x00
+     *
+     * |     | Acm | Imm | Zpg | ZpX | ZpY | Abs | AbX | AbY | Ind | InX | inY |
+     * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+     * | BIT |     |  o  |     |     |     |  o  |     |     |     |     |     |
+     * | JMP |     |     |     |     |     |  o  |     |     |  o  |     |     |
+     * | STY |     |     |  o  |  o  |     |  o  |     |     |     |     |     |
+     * | LDY |     |  o  |  o  |  o  |     |  o  |  o  |     |     |     |     |
+     * | CPY |     |  o  |  o  |     |     |  o  |     |     |     |     |     |
+     * | CPX |     |  o  |  o  |     |     |  o  |     |     |     |     |     |
+     *
      */
     enum OpcodeSet_00
     {
@@ -40,8 +74,20 @@ namespace nesco
 
     /**
      * Opcode Set 0x01
-     * 
+     *
      * opcode & 0x3 == 0x01
+     *
+     * |     | Acm |Imm 2| Zpg | ZpX | ZpY | Abs | AbX | AbY | Ind | InX | inY |
+     * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+     * | ORA |     |  o  |  o  |  o  |     |  o  |  o  |  o  |     |  o  |  o  |
+     * | AND |     |  o  |  o  |  o  |     |  o  |  o  |  o  |     |  o  |  o  |
+     * | EOR |     |  o  |  o  |  o  |     |  o  |  o  |  o  |     |  o  |  o  |
+     * | ADC |     |  o  |  o  |  o  |     |  o  |  o  |  o  |     |  o  |  o  |
+     * | STA |     |     |  o  |  o  |     |  o  |  o  |  o  |     |  o  |  o  |
+     * | LDA |     |  o  |  o  |  o  |     |  o  |  o  |  o  |     |  o  |  o  |
+     * | CMP |     |  o  |  o  |  o  |     |  o  |  o  |  o  |     |  o  |  o  |
+     * | SBC |     |  o  |  o  |  o  |     |  o  |  o  |  o  |     |  o  |  o  |
+     *
      */
     enum OpcodeSet_01
     {
@@ -57,8 +103,20 @@ namespace nesco
 
     /**
      * Opcode Set 0x10
-     * 
+     *
      * opcode & 0x3 == 0x10
+     *
+     * |     | Acm | Imm | Zpg | ZpX | ZpY | Abs | AbX | AbY | Ind | InX | inY |
+     * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+     * | ASL |  o  |     |  o  |  o  |     |  o  |  o  |     |     |     |     |
+     * | ROL |  o  |     |  o  |  o  |     |  o  |  o  |     |     |     |     |
+     * | LSR |  o  |     |  o  |  o  |     |  o  |  o  |     |     |     |     |
+     * | ROR |  o  |     |  o  |  o  |     |  o  |  o  |     |     |     |     |
+     * | STX |     |     |  o  |     |  o  |  o  |     |     |     |     |     |
+     * | LDX |     |  o  |  o  |     |  o  |  o  |     |  o  |     |     |     |
+     * | DEC |     |     |  o  |  o  |     |     |  o  |  o  |     |     |     |
+     * | INC |     |     |  o  |  o  |     |     |  o  |  o  |     |     |     |
+     *
      */
     enum OpcodeSet_10
     {
@@ -80,6 +138,7 @@ namespace nesco
         BRK = 0x00,     // (SP)-- := PC; (SP)-- := P; PC := ($FFFE)
         PHP = 0x08,     // (SP)-- := P
         CLC = 0x18,     // C := 0
+        JSR = 0x20,     // (SP)-- := PC; PC := {adr}
         PLP = 0x28,     // P := ++(SP)
         SEC = 0x38,     // C := 1
         RTI = 0x40,     // P := ++(SP) ; PC := ++(SP)
@@ -117,14 +176,6 @@ namespace nesco
         BCS = 0xB0,     // branch on C=1
         BNE = 0xD0,     // branch on Z=0
         BEQ = 0xF0,     // branch on Z=1
-    };
-
-    /**
-     * Opcode Set others
-     */
-    enum OpcodeSet_Others
-    {
-        JSR = 0x20,     // (SP)-- := PC; PC := {adr}
     };
 
     uint8_t OpCycles[0x100] = {
