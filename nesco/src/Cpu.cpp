@@ -28,7 +28,6 @@ namespace nesco
 
         if (execOpImplied(opcode) ||
             execOpBranch(opcode) ||
-            execOpOthers(opcode) ||
             execOp00(opcode) ||
             execOp01(opcode) ||
             execOp10(opcode))
@@ -49,7 +48,7 @@ namespace nesco
         return bus->read(addr);
     }
 
-    uint16_t Cpu::readWord(uint16_t addr, bool zp = false)
+    uint16_t Cpu::readWord(uint16_t addr, bool zp)
     {
         uint16_t mask = zp ? 0x00FF : 0xFFFF;
         return read((addr & mask)) | (read((addr + 1) & mask) << 8);
@@ -414,7 +413,7 @@ namespace nesco
         uint16_t addr;
         // irregular pattern
         if (opcode == LDX_ABS_Y) {
-            mode = AbbsoluteY;
+            mode = AbsoluteY;
         } else if (opcode == STX_ZPG_Y) {
             mode = ZeropageY;
         }
@@ -431,7 +430,7 @@ namespace nesco
                 addr = (fetch() + X) & 0xFF;
                 break;
             case ZeropageY:
-                addr = fetch() + Y & 0xFF;
+                addr = (fetch() + Y) & 0xFF;
                 break;
             case Absolute:
                 addr = fetchWord();

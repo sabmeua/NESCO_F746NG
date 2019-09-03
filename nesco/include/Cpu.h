@@ -67,7 +67,6 @@ namespace nesco
         bool execOp00(uint8_t opcode);
         bool execOp01(uint8_t opcode);
         bool execOp10(uint8_t opcode);
-        uint16_t loadAddr(AddressingMode mode);
 
         // Stack operations
         void push(uint8_t value);
