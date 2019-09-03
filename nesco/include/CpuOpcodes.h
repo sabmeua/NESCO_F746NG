@@ -15,6 +15,7 @@ namespace nesco
      *       |     |
      *       |     +-- Addressing mode
      *       |           The patterns cannot be followed with bitmask is below.
+     *       |           * 0x6C : JMP Indirect (mode=0x0C overlaps with Abs mode)
      *       |           * 0x96 : STX Indexed zeropage Y (mask=0x14 -> mode=0x10)
      *       |           * 0xBE : LDX indexed absolute Y (mask=0x1C -> mode=0x18)
      *       |
@@ -23,6 +24,7 @@ namespace nesco
     #define OPCODE_SET_MASK 0x03
     #define ADDR_MODE_MASK  0x1C
     #define COMMAND_MASK    0xE0
+    #define JMP_IND         0x6C
     #define STX_ZPG_Y       0x96
     #define LDX_ABS_Y       0xBE
 
@@ -37,12 +39,12 @@ namespace nesco
         Accumlator = 0x08,  // A << 1
         Immediate2 = 0x08,  // #$00 for Opcode Set 0x01 group
         Absolute   = 0x0C,  // $0000
-        Indirect   = 0x0C,  // ($0000) for JMP command
         IndirectY  = 0x10,  // ($00),Y
         ZeropageX  = 0x14,  // $00,X
         ZeropageY  = 0x16,  // $00,Y
         AbsoluteY  = 0x18,  // $0000,Y
         AbsoluteX  = 0x1C,  // $0000,X
+        Indirect,           // ($0000) for JMP command
         Implied,            // implied in command
         Relative,           // PC relative
     };
