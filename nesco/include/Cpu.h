@@ -64,10 +64,10 @@ namespace nesco
 
         bool execOpImplied(uint8_t opcode);
         bool execOpBranch(uint8_t opcode);
-        bool execOpOthers(uint8_t opcode);
         bool execOp00(uint8_t opcode);
         bool execOp01(uint8_t opcode);
         bool execOp10(uint8_t opcode);
+        uint16_t loadAddr(AddressingMode mode);
 
         // Stack operations
         void push(uint8_t value);
@@ -75,10 +75,13 @@ namespace nesco
         void pushWord(uint16_t value);
         uint16_t popWord();
 
-        // IO methods
+        // Read from PC
         uint8_t fetch();
+        uint16_t fetchWord();
+
+        // IO methods
         uint8_t read(uint16_t addr);
-        uint16_t readWord(uint16_t addr);
+        uint16_t readWord(uint16_t addr, bool zp = false);
         void write(uint16_t addr, uint8_t data);
 
         // Status register operations

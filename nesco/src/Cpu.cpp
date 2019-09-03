@@ -49,9 +49,10 @@ namespace nesco
         return bus->read(addr);
     }
 
-    uint16_t Cpu::readWord(uint16_t addr)
+    uint16_t Cpu::readWord(uint16_t addr, bool zp = false)
     {
-        return read(addr) | (read(addr + 1) << 8);
+        uint16_t mask = zp ? 0x00FF : 0xFFFF;
+        return read((addr & mask)) | (read((addr + 1) & mask) << 8);
     }
 
     void Cpu::push(uint8_t value)
@@ -72,14 +73,17 @@ namespace nesco
 
     uint16_t Cpu::popWord()
     {
-        uint16_t value = pop();
-        value |= pop() << 8;
-        return value;
+        return pop() | (pop() << 8);
     }
 
     uint8_t Cpu::fetch()
     {
         return read(PC++);
+    }
+
+    uint16_t Cpu::fetchWord()
+    {
+        return fetch() | (fetch() << 8);
     }
 
     void Cpu::setFlag(StatusFlag flag)
@@ -126,6 +130,13 @@ namespace nesco
             case CLC:
                 clearFlag(CarryFlag);
                 break;
+            case JSR:
+            {
+                uint16_t addr = fetchWord();
+                pushWord(PC - 1);
+                PC = addr;
+                break;
+            }
             case PLP:
                 P = pop();
                 break;
@@ -254,56 +265,43 @@ namespace nesco
         return true;
     }
 
-
-    bool Cpu::execOpOthers(uint8_t opcode)
-    {
-        switch (static_cast<OpcodeSet_Others>(opcode)) {
-            case JSR:
-            {
-                uint16_t addr = readWord(PC);
-                pushWord(PC - 1);
-                PC = addr;
-                break;
-            }
-            default:
-                return false;
-        }
-
-        return true;
-    }
-
     bool Cpu::execOp00(uint8_t opcode)
     {
-        if ((opcode & 0x3) != 0) {
+        if ((opcode & OPCODE_SET_MASK) != 0) {
             return false;
         }
 
-
-        AddressingMode mode = static_cast<AddressingMode>(opcode & 0x1C);
+        AddressingMode mode = static_cast<AddressingMode>(opcode & ADDR_MODE_MASK);
         uint16_t addr;
+        // Irregular pattern
+        if (opcode == JMP_IND) {
+            mode = Indirect;
+        }
         switch (mode) {
             case Immediate:
                 addr = PC++;
                 break;
             case Zeropage:
-                addr = read(PC++);
-                break;
-            case Absolute:
-                addr = readWord(PC);
-                PC += 2;
+                addr = fetch() & 0xFF;
                 break;
             case ZeropageX:
-                addr = (read(PC++) + X) & 0xff;
+                addr = (fetch() + X) & 0xFF;
+                break;
+            case Absolute:
+                addr = fetchWord();
+                break;
+            case AbsoluteX:
+                addr = fetchWord() + X;
                 break;
             case Indirect:
-                addr = readWord(PC) + X;
-                PC += 2;
+                addr = fetchWord();
+                addr = readWord(addr);
                 break;
             default:
                 return false;
         }
 
-        switch (static_cast<OpcodeSet_00>(opcode & 0xE0)) {
+        switch (static_cast<OpcodeSet_00>(opcode & COMMAND_MASK)) {
             case BIT:
             {
                 uint8_t data = read(addr);
@@ -345,11 +343,44 @@ namespace nesco
 
     bool Cpu::execOp01(uint8_t opcode)
     {
-        if ((opcode & 0x3) != 1) {
+        if ((opcode & OPCODE_SET_MASK) != 1) {
             return false;
         }
 
-        switch (static_cast<OpcodeSet_01>(opcode & 0xE0)) {
+        AddressingMode mode = static_cast<AddressingMode>(opcode & ADDR_MODE_MASK);
+        uint16_t addr;
+        switch (mode) {
+            case Immediate2:
+                addr = PC++;
+                break;
+            case Zeropage:
+                addr = fetch() & 0xFF;
+                break;
+            case ZeropageX:
+                addr = (fetch() + X) & 0xFF;
+                break;
+            case Absolute:
+                addr = fetchWord();
+                break;
+            case AbsoluteX:
+                addr = fetchWord() + X;
+                break;
+            case AbsoluteY:
+                addr = fetchWord() + Y;
+                break;
+            case IndirectX:
+                addr = (fetch() + X) & 0xFF;
+                addr = readWord(addr, true);
+                break;
+            case IndirectY:
+                addr = fetch();
+                addr = readWord(addr, true) + Y;
+                break;
+            default:
+                return false;
+        }
+
+        switch (static_cast<OpcodeSet_01>(opcode & COMMAND_MASK)) {
             case ORA:
                 break;
             case AND:
@@ -375,19 +406,66 @@ namespace nesco
 
     bool Cpu::execOp10(uint8_t opcode)
     {
-        if ((opcode & 0x3) != 2) {
+        if ((opcode & OPCODE_SET_MASK) != 2) {
             return false;
         }
 
-        AddressingMode mode = static_cast<AddressingMode>(opcode & 0x1C);
-        switch (static_cast<OpcodeSet_10>(opcode & 0xE0)) {
+        AddressingMode mode = static_cast<AddressingMode>(opcode & ADDR_MODE_MASK);
+        uint16_t addr;
+        // irregular pattern
+        if (opcode == LDX_ABS_Y) {
+            mode = AbbsoluteY;
+        } else if (opcode == STX_ZPG_Y) {
+            mode = ZeropageY;
+        }
+        switch (mode) {
+            case Accumlator:
+                break;
+            case Immediate:
+                addr = PC++;
+                break;
+            case Zeropage:
+                addr = fetch() & 0xFF;
+                break;
+            case ZeropageX:
+                addr = (fetch() + X) & 0xFF;
+                break;
+            case ZeropageY:
+                addr = fetch() + Y & 0xFF;
+                break;
+            case Absolute:
+                addr = fetchWord();
+                break;
+            case AbsoluteX:
+                addr = fetchWord() + X;
+                break;
+            case AbsoluteY:
+                addr = fetchWord() + Y;
+                break;
+            default:
+                return false;
+        }
+
+        switch (static_cast<OpcodeSet_10>(opcode & COMMAND_MASK)) {
             case ASL:
+                if (mode == Accumlator) {
+                } else {
+                }
                 break;
             case ROL:
+                if (mode == Accumlator) {
+                } else {
+                }
                 break;
             case LSR:
+                if (mode == Accumlator) {
+                } else {
+                }
                 break;
             case ROR:
+                if (mode == Accumlator) {
+                } else {
+                }
                 break;
             case STX:
                 break;
