@@ -24,7 +24,9 @@ namespace nesco
         Cpu *cpu;
         Ppu *ppu;
         CpuBus *cpubus;
+        PpuBus *ppubus;
         Ram *ram;
+        Ram *charmem;
     };
 };
 

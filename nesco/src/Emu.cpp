@@ -7,7 +7,9 @@ namespace nesco
         ram = new Ram(0x800);
         cpubus = new CpuBus(ram);
         cpu = new Cpu(cpubus);
-        ppu = new Ppu();
+        charmem = new Ram(0x4000);
+        ppubus = new PpuBus(charmem);
+        ppu = new Ppu(ppubus);
     }
 
     Emu::~Emu()
@@ -15,7 +17,9 @@ namespace nesco
         delete cpubus;
         delete cpu;
         delete ram;
+        delete ppubus;
         delete ppu;
+        delete charmem;
     }
 
     void Emu::run()

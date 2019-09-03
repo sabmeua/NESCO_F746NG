@@ -3,7 +3,7 @@
 namespace nesco
 {
 
-    Ppu::Ppu()
+    Ppu::Ppu(PpuBus *_ppubus) : bus(_ppubus)
     {
     }
 
