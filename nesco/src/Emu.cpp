@@ -7,6 +7,7 @@ namespace nesco
         ram = new Ram();
         cpubus = new CpuBus(ram);
         cpu = new Cpu(cpubus);
+        ppu = new Ppu();
     }
 
     Emu::~Emu()
@@ -18,9 +19,12 @@ namespace nesco
 
     void Emu::run()
     {
+        reset();
     }
 
     void Emu::reset()
     {
+        cpu->reset();
+        ppu->reset();
     }
 };

@@ -2,6 +2,7 @@
 #define NESCO_EMU_H
 
 #include "Cpu.h"
+#include "Ppu.h"
 #include "Ram.h"
 #include "CpuBus.h"
 
@@ -18,6 +19,7 @@ namespace nesco
 
     private:
         Cpu *cpu;
+        Ppu *ppu;
         CpuBus *cpubus;
         Ram *ram;
     };
