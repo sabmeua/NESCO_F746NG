@@ -42,11 +42,11 @@ namespace nesco
     class Cpu
     {
     public:
-        Cpu(CpuBus *_bus);
+        Cpu(CpuBus *_cpubus);
         ~Cpu();
 
         void reset();
-        void exec();
+        void step();
 
     private:
         // Registers
@@ -67,7 +67,6 @@ namespace nesco
 
         CpuBus *bus;
         uint8_t skipCycle;
-        uint8_t exCycle;
 
         bool execOpImplied(uint8_t opcode);
         bool execOpBranch(uint8_t opcode);

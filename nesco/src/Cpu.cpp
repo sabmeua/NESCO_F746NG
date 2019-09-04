@@ -3,9 +3,8 @@
 
 namespace nesco
 {
-    Cpu::Cpu(CpuBus *_bus)
+    Cpu::Cpu(CpuBus *_cpubus) : bus(_cpubus)
     {
-        bus = bus;
         skipCycle = 0;
     }
 
@@ -16,20 +15,18 @@ namespace nesco
     void Cpu::reset()
     {
         skipCycle = 0;
-        exCycle = 0;
         A = X = Y = 0;
         P = INITIAL_STATUS;
         SP = SP_BASE;
         PC = RESET_VECTOR;
     }
 
-    void Cpu::exec()
+    void Cpu::step()
     {
         if (skipCycle-- > 0) {
             return;
         }
 
-        exCycle = 0;
         uint8_t opcode = fetch();
 
         if (execOpImplied(opcode) ||
@@ -38,7 +35,7 @@ namespace nesco
             execOp01(opcode) ||
             execOp10(opcode))
         {
-            skipCycle += OpCycles[opcode] + exCycle;
+            skipCycle += OpCycles[opcode];
         } else {
             // implement! abort & logging
         }
@@ -269,7 +266,6 @@ namespace nesco
 
         if (branch) {
             PC = addr;
-            exCycle += 1;
         }
 
         return true;
