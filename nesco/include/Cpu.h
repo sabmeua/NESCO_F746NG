@@ -39,6 +39,28 @@ namespace nesco
     };
     #define INITIAL_STATUS 0x34
 
+    /**
+     * Addressing mode
+     */
+    enum AddressingMode
+    {
+        Immediate1 = 0x00,  // #$00 for Opcode Set 0x00 and 0x10 group
+        IndirectX  = 0x00,  // ($00,X)
+        Zeropage   = 0x04,  // $00
+        Accumlator = 0x08,  // A << 1
+        Immediate2 = 0x08,  // #$00 for Opcode Set 0x01 group
+        Absolute   = 0x0C,  // $0000
+        IndirectY  = 0x10,  // ($00),Y
+        ZeropageX  = 0x14,  // $00,X
+        ZeropageY  = 0x16,  // $00,Y
+        AbsoluteY  = 0x18,  // $0000,Y
+        AbsoluteX  = 0x1C,  // $0000,X
+        Immediate,
+        Indirect,           // ($0000) for JMP command
+        Implied,            // implied in command
+        Relative,           // PC relative
+    };
+
     class Cpu
     {
     public:
@@ -95,6 +117,8 @@ namespace nesco
         void setFlagNZ(uint8_t value);
         void clearFlag(StatusFlag flag);
         bool getFlag(StatusFlag flag);
+
+        uint16_t loadAddr(AddressingMode mode);
     };
 
 };

@@ -278,34 +278,15 @@ namespace nesco
         }
 
         AddressingMode mode = static_cast<AddressingMode>(opcode & ADDR_MODE_MASK);
-        uint16_t addr;
+        if (mode == Immediate1) {
+            mode = Immediate;
+        }
+
         // Irregular pattern
         if (opcode == JMP_IND) {
             mode = Indirect;
         }
-        switch (mode) {
-            case Immediate:
-                addr = PC++;
-                break;
-            case Zeropage:
-                addr = fetch() & 0xFF;
-                break;
-            case ZeropageX:
-                addr = (fetch() + X) & 0xFF;
-                break;
-            case Absolute:
-                addr = fetchWord();
-                break;
-            case AbsoluteX:
-                addr = fetchWord() + X;
-                break;
-            case Indirect:
-                addr = fetchWord();
-                addr = readWord(addr);
-                break;
-            default:
-                return false;
-        }
+        uint16_t addr = loadAddr(mode);
 
         OpcodeSet_00 comm = static_cast<OpcodeSet_00>(opcode & COMMAND_MASK);
         switch (comm) {
@@ -355,37 +336,11 @@ namespace nesco
         }
 
         AddressingMode mode = static_cast<AddressingMode>(opcode & ADDR_MODE_MASK);
-        uint16_t addr;
-        switch (mode) {
-            case Immediate2:
-                addr = PC++;
-                break;
-            case Zeropage:
-                addr = fetch() & 0xFF;
-                break;
-            case ZeropageX:
-                addr = (fetch() + X) & 0xFF;
-                break;
-            case Absolute:
-                addr = fetchWord();
-                break;
-            case AbsoluteX:
-                addr = fetchWord() + X;
-                break;
-            case AbsoluteY:
-                addr = fetchWord() + Y;
-                break;
-            case IndirectX:
-                addr = (fetch() + X) & 0xFF;
-                addr = readWord(addr, true);
-                break;
-            case IndirectY:
-                addr = fetch();
-                addr = readWord(addr, true) + Y;
-                break;
-            default:
-                return false;
+        if (mode == Immediate2) {
+            mode = Immediate;
         }
+
+        uint16_t addr = loadAddr(mode);
 
         OpcodeSet_01 comm = static_cast<OpcodeSet_01>(opcode & COMMAND_MASK);
         switch (comm) {
@@ -431,7 +386,7 @@ namespace nesco
                 uint16_t sum = A + data + getFlag(CarryFlag);
                 setFlag(OverflowFlag, ~(A ^ data) & (A ^ sum));
                 A = sum & 0xFF;
-                setFlag(CarryFlag, sum >> 8);
+                setFlag(CarryFlag, (sum >> 8) * CarryFlag);
                 setFlagNZ(A);
                 break;
             }
@@ -449,40 +404,18 @@ namespace nesco
         }
 
         AddressingMode mode = static_cast<AddressingMode>(opcode & ADDR_MODE_MASK);
-        uint16_t addr = 0;
+        if (mode == Immediate1) {
+            mode = Immediate;
+        }
+
         // irregular pattern
         if (opcode == LDX_ABS_Y) {
             mode = AbsoluteY;
         } else if (opcode == STX_ZPG_Y) {
             mode = ZeropageY;
         }
-        switch (mode) {
-            case Accumlator:
-                break;
-            case Immediate:
-                addr = PC++;
-                break;
-            case Zeropage:
-                addr = fetch() & 0xFF;
-                break;
-            case ZeropageX:
-                addr = (fetch() + X) & 0xFF;
-                break;
-            case ZeropageY:
-                addr = (fetch() + Y) & 0xFF;
-                break;
-            case Absolute:
-                addr = fetchWord();
-                break;
-            case AbsoluteX:
-                addr = fetchWord() + X;
-                break;
-            case AbsoluteY:
-                addr = fetchWord() + Y;
-                break;
-            default:
-                return false;
-        }
+
+        uint16_t addr = loadAddr(mode);
 
         OpcodeSet_10 comm = static_cast<OpcodeSet_10>(opcode & COMMAND_MASK);
         switch (comm) {
@@ -552,6 +485,51 @@ namespace nesco
         }
 
         return true;
+    }
+
+    uint16_t Cpu::loadAddr(AddressingMode mode)
+    {
+        uint16_t addr = 0;
+
+        switch (mode) {
+            case Immediate:
+                addr = PC++;
+                break;
+            case Zeropage:
+                addr = fetch() & 0xFF;
+                break;
+            case ZeropageX:
+                addr = (fetch() + X) & 0xFF;
+                break;
+            case ZeropageY:
+                addr = (fetch() + Y) & 0xFF;
+                break;
+            case Absolute:
+                addr = fetchWord();
+                break;
+            case AbsoluteX:
+                addr = fetchWord() + X;
+                break;
+            case AbsoluteY:
+                addr = fetchWord() + Y;
+                break;
+            case Indirect:
+                addr = fetchWord();
+                addr = readWord(addr);
+                break;
+            case IndirectX:
+                addr = (fetch() + X) & 0xFF;
+                addr = readWord(addr, true);
+                break;
+            case IndirectY:
+                addr = fetchWord();
+                addr = readWord(addr);
+                break;
+            }
+            default:
+                break;
+        }
+        return addr;
     }
 
 };

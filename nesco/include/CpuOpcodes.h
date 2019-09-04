@@ -29,32 +29,11 @@ namespace nesco
     #define LDX_ABS_Y       0xBE
 
     /**
-     * Addressing mode
-     */
-    enum AddressingMode
-    {
-        Immediate  = 0x00,  // #$00
-        IndirectX  = 0x00,  // ($00,X)
-        Zeropage   = 0x04,  // $00
-        Accumlator = 0x08,  // A << 1
-        Immediate2 = 0x08,  // #$00 for Opcode Set 0x01 group
-        Absolute   = 0x0C,  // $0000
-        IndirectY  = 0x10,  // ($00),Y
-        ZeropageX  = 0x14,  // $00,X
-        ZeropageY  = 0x16,  // $00,Y
-        AbsoluteY  = 0x18,  // $0000,Y
-        AbsoluteX  = 0x1C,  // $0000,X
-        Indirect,           // ($0000) for JMP command
-        Implied,            // implied in command
-        Relative,           // PC relative
-    };
-
-    /**
      * Opcode Set 0x00
      *
      * opcode & 0x3 == 0x00
      *
-     * |     | Acm | Imm | Zpg | ZpX | ZpY | Abs | AbX | AbY | Ind | InX | inY |
+     * |     | Acm |Imm 1| Zpg | ZpX | ZpY | Abs | AbX | AbY | Ind | InX | inY |
      * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
      * | BIT |     |  o  |     |     |     |  o  |     |     |     |     |     |
      * | JMP |     |     |     |     |     |  o  |     |     |  o  |     |     |
@@ -108,7 +87,7 @@ namespace nesco
      *
      * opcode & 0x3 == 0x10
      *
-     * |     | Acm | Imm | Zpg | ZpX | ZpY | Abs | AbX | AbY | Ind | InX | inY |
+     * |     | Acm |Imm 1| Zpg | ZpX | ZpY | Abs | AbX | AbY | Ind | InX | inY |
      * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
      * | ASL |  o  |     |  o  |  o  |     |  o  |  o  |     |     |     |     |
      * | ROL |  o  |     |  o  |  o  |     |  o  |  o  |     |     |     |     |
