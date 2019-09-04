@@ -508,11 +508,19 @@ namespace nesco
                 addr = fetchWord();
                 break;
             case AbsoluteX:
-                addr = fetchWord() + X;
+            {
+                uint16_t base = fetchWord();
+                skipCycle += checkPageCross(base, base + X);
+                addr = base + X;
                 break;
+            }
             case AbsoluteY:
-                addr = fetchWord() + Y;
+            {
+                uint16_t base = fetchWord();
+                skipCycle += checkPageCross(base, base + Y);
+                addr = base + Y;
                 break;
+            }
             case Indirect:
                 addr = fetchWord();
                 addr = readWord(addr);
@@ -522,8 +530,10 @@ namespace nesco
                 addr = readWord(addr, true);
                 break;
             case IndirectY:
-                addr = fetchWord();
-                addr = readWord(addr);
+            {
+                uint16_t base = readWord(fetch(), true);
+                skipCycle += checkPageCross(base, base + Y);
+                addr = base + Y;
                 break;
             }
             default:
@@ -532,4 +542,8 @@ namespace nesco
         return addr;
     }
 
+    bool Cpu::checkPageCross(uint16_t addr1, uint16_t addr2)
+    {
+        return (addr1 & 0xFF00) != (addr2 & 0xFF00);
+    }
 };

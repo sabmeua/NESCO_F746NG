@@ -119,6 +119,7 @@ namespace nesco
         bool getFlag(StatusFlag flag);
 
         uint16_t loadAddr(AddressingMode mode);
+        bool checkPageCross(uint16_t addr1, uint16_t addr2);
     };
 
 };
