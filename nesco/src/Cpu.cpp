@@ -231,8 +231,6 @@ namespace nesco
     bool Cpu::execOpBranch(uint8_t opcode)
     {
         bool branch = false;
-        uint16_t addr;
-
         switch (static_cast<OpcodeSet_Branch>(opcode)) {
             case BPL:
                 branch = P & NegativeFlag;
@@ -262,10 +260,13 @@ namespace nesco
                 return false;
         }
 
-        addr = 0x0000; /** @ToDo: read addr from ram by realative mode */
+        uint16_t addr = loadAddr(Relative);
 
         if (branch) {
             PC = addr;
+            skipCycle += 1;
+        } else {
+            PC++;
         }
 
         return true;
@@ -536,9 +537,17 @@ namespace nesco
                 addr = base + Y;
                 break;
             }
+            case Relative:
+            {
+                uint16_t offset = fetch();
+                addr = PC + offset;
+                skipCycle += checkPageCross(PC, addr);
+                break;
+            }
             default:
                 break;
         }
+
         return addr;
     }
 
