@@ -98,15 +98,15 @@ namespace nesco
         P &= ~flag;
     }
 
-    void Cpu::setFlag(StatusFlag flag, bool value)
+    void Cpu::setFlag(StatusFlag flag, uint8_t value)
     {
-        P = (flag * static_cast<uint8_t>(value)) | (~flag | P);
+        P = (flag & value) | (~flag | P);
     }
 
     void Cpu::setFlagNZ(uint8_t value)
     {
-        setFlag(NegativeFlag, value & NegativeFlag);
-        setFlag(ZeroFlag, value == 0);
+        setFlag(NegativeFlag, value);
+        setFlag(ZeroFlag, (value == 0) * ZeroFlag);
     }
 
     bool Cpu::getFlag(StatusFlag flag)
@@ -126,7 +126,7 @@ namespace nesco
                 push(P);
                 setFlag(IrqFlag);
                 if (!interrupt) {
-                    PC = readWord(0xFFFE);
+                    PC = readWord(IRQ_VECTOR);
                 }
                 PC--;
                 break;
@@ -312,9 +312,9 @@ namespace nesco
             case BIT:
             {
                 uint8_t data = read(addr);
-                setFlag(ZeroFlag, !(A & data) * ZeroFlag);
-                setFlag(OverflowFlag, data);
+                setFlag(ZeroFlag, ((A & data) > 0) * ZeroFlag);
                 setFlag(NegativeFlag, data);
+                setFlag(OverflowFlag, data);
                 break;
             }
             case JMP:
@@ -331,14 +331,14 @@ namespace nesco
             {
                 uint16_t cmp = Y - read(addr);
                 setFlag(CarryFlag, (cmp > 0) * CarryFlag);
-                setFlagNZ(cmp);
+                setFlagNZ(cmp & 0xFF);
                 break;
             }
             case CPX:
             {
                 uint16_t cmp = X - read(addr);
                 setFlag(CarryFlag, (cmp > 0) * CarryFlag);
-                setFlagNZ(cmp);
+                setFlagNZ(cmp & 0xFF);
                 break;
             }
             default:
@@ -405,9 +405,9 @@ namespace nesco
             {
                 uint8_t data = read(addr);
                 uint16_t sum = A + data + getFlag(CarryFlag);
-                setFlag(CarryFlag, (sum & 0x0100) >> 8);
-                setFlag(OverflowFlag, (A ^ sum) & (data ^ sum) & 0xFF);
+                setFlag(OverflowFlag, ~(A ^ data) & (A ^ sum));
                 A = sum & 0xFF;
+                setFlag(CarryFlag, (sum >> 8) * CarryFlag);
                 setFlagNZ(A);
                 break;
             }
@@ -421,17 +421,17 @@ namespace nesco
             case CMP:
             {
                 uint16_t cmp = A - read(addr);
-                setFlag(CarryFlag,  (!(cmp & 0x0100) >> 8));
+                setFlag(CarryFlag,  !(cmp >> 8) * CarryFlag);
                 setFlagNZ(cmp & 0xFF);
                 break;
             }
             case SBC:
             {
-                uint16_t data = read(addr);
-                uint16_t sub = A - data - !getFlag(CarryFlag);
-                setFlag(CarryFlag, !(sub & 0x0100) >> 8);
-                setFlag(OverflowFlag, (A ^ sub) & (~data ^ sub) & 0x80);
-                A = sub;
+                uint8_t data = read(addr) ^ 0xFF;
+                uint16_t sum = A + data + getFlag(CarryFlag);
+                setFlag(OverflowFlag, ~(A ^ data) & (A ^ sum));
+                A = sum & 0xFF;
+                setFlag(CarryFlag, sum >> 8);
                 setFlagNZ(A);
                 break;
             }
@@ -491,7 +491,7 @@ namespace nesco
             {
                 uint8_t carry = 0;
                 if (comm == ROL) {
-                    carry = (P & CarryFlag) / CarryFlag;
+                    carry = getFlag(CarryFlag);
                 }
                 if (mode == Accumlator) {
                     setFlag(CarryFlag, A & 0x80);
@@ -511,7 +511,7 @@ namespace nesco
             {
                 uint8_t carry = 0;
                 if (comm == ROR) {
-                    carry = ((P & CarryFlag) / CarryFlag) << 7;
+                    carry = getFlag(CarryFlag) << 7;
                 }
                 if (mode == Accumlator) {
                     setFlag(CarryFlag, A & 0x01);
