@@ -131,6 +131,7 @@ namespace nesco
         uint8_t PPUDATA;    // RW: PPU Memory data register
         uint8_t OAMDMA;     // W:  OAM DMA register (High byte)
 
+        static const Colors colors[64];
     };
 };
 #endif
