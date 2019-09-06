@@ -14,12 +14,12 @@ namespace nesco
 
     uint8_t Ram::read(uint16_t addr)
     {
-        return mem[addr & size];
+        return mem[addr % size];
     }
 
     void Ram::write(uint16_t addr, uint8_t data)
     {
-        mem[addr & size] = data;
+        mem[addr % size] = data;
     }
 
     void Ram::reset()
