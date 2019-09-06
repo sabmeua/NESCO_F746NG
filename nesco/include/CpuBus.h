@@ -2,13 +2,14 @@
 #define NESCO_BUS_H
 
 #include "Ram.h"
+#include "Ppu.h"
 
 namespace nesco
 {
     class CpuBus
     {
     public:
-        CpuBus(Ram *_ram);
+        CpuBus(Ram *_ram, Ppu *_ppu);
         ~CpuBus();
 
         uint8_t read(uint16_t addr);
@@ -16,6 +17,7 @@ namespace nesco
 
     private:
         Ram *ram;
+        Ppu *ppu;
     };
 };
 

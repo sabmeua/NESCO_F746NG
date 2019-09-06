@@ -95,6 +95,9 @@ namespace nesco
         void reset();
         void step();
 
+        uint8_t readRegister(uint16_t addr);
+        void writeRegister(uint16_t addr, uint8_t data);
+
     private:
         PpuBus *bus;
         uint8_t scanline;

@@ -60,6 +60,15 @@ namespace nesco
         }
     }
 
+    uint8_t Ppu::readRegister(uint16_t addr)
+    {
+        return 0;
+    }
+
+    void Ppu::writeRegister(uint16_t addr, uint8_t data)
+    {
+    }
+
     void Ppu::setFlag(PpuStatusFlag flag)
     {
         PPUSTATUS |= flag;
