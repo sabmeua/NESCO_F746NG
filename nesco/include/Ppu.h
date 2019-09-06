@@ -81,6 +81,12 @@ namespace nesco
         int RecurrenceCycle = 341;
     } cycleState;
 
+    enum PpuStatusFlag {
+        VBlankFlag = 0x80,
+        SpriteZeroHitFlag = 0x40,
+        SpriteOverflowFlag = 0x20,
+    };
+
     class Ppu
     {
     public:
@@ -138,6 +144,12 @@ namespace nesco
         uint8_t OAMDMA;     // W:  OAM DMA register (High byte)
 
         static const Colors colors[64];
+
+        void setFlag(PpuStatusFlag flag);
+        void clearFlag(PpuStatusFlag flag);
+        bool getFlag(PpuStatusFlag flag);
+        bool isVBlank();
+
     };
 };
 #endif

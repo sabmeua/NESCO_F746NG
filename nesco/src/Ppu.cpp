@@ -61,4 +61,23 @@ namespace nesco
         }
     }
 
-};
+    void Ppu::setFlag(PpuStatusFlag flag)
+    {
+        PPUSTATUS |= flag;
+    }
+
+    void Ppu::clearFlag(PpuStatusFlag flag)
+    {
+        PPUSTATUS &= ~flag;
+    }
+
+    bool Ppu::getFlag(PpuStatusFlag flag)
+    {
+        return PPUSTATUS & flag;
+    }
+
+    bool Ppu::isVBlank()
+    {
+        return getFlag(VBlankFlag);
+    }
+}
