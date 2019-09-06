@@ -1,7 +1,7 @@
 #ifndef NESCO_OPCODE_H
 #define NESCO_OPCODE_H
 
-namespace nesco
+namespace nesco::core
 {
     /**
      * Opcode bit constitution

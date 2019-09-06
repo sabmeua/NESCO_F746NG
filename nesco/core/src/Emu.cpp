@@ -1,6 +1,6 @@
 #include "Emu.h"
 
-namespace nesco
+namespace nesco::core
 {
     Emu::Emu(EmuDevice &_dev) : dev(_dev)
     {

@@ -1,6 +1,6 @@
 #include "CpuBus.h"
 
-namespace nesco
+namespace nesco::core
 {
     CpuBus::CpuBus(Ram *_ram, Ppu *_ppu) :
         ram(_ram), ppu(_ppu)

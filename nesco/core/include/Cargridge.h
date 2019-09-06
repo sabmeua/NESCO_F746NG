@@ -1,7 +1,7 @@
 #ifndef NESCO_CARTRIDGE_H
 #define NESCO_CARTRIDGE_H
 
-namespace nesco
+namespace nesco::core
 {
     class Cartridge
     {

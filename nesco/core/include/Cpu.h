@@ -4,7 +4,7 @@
 #include <cstdint>
 #include "CpuBus.h"
 
-namespace nesco
+namespace nesco::core
 {
     /**
      * Memory map

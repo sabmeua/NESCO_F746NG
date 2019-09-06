@@ -1,6 +1,6 @@
 #include "Ram.h"
 
-namespace nesco
+namespace nesco::core
 {
     Ram::Ram(uint16_t _size) : size(_size)
     {

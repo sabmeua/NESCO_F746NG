@@ -7,7 +7,7 @@
 #include "CpuBus.h"
 #include "EmuDevice.h"
 
-namespace nesco
+namespace nesco::core
 {
     class Emu
     {

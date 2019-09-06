@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace nesco
+namespace nesco::core
 {
     class Rom
     {

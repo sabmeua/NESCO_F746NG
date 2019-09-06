@@ -1,7 +1,7 @@
 #include "Cpu.h"
 #include "CpuOpcodes.h"
 
-namespace nesco
+namespace nesco::core
 {
     Cpu::Cpu(CpuBus *_cpubus) : bus(_cpubus)
     {

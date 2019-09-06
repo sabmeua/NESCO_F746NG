@@ -1,6 +1,6 @@
 #include "Rom.h"
 
-namespace nesco
+namespace nesco::core
 {
     Rom::Rom(uint16_t _size) : size(_size)
     {

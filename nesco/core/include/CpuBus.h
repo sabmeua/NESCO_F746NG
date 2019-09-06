@@ -4,7 +4,7 @@
 #include "Ram.h"
 #include "Ppu.h"
 
-namespace nesco
+namespace nesco::core
 {
     class CpuBus
     {

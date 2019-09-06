@@ -3,7 +3,7 @@
 
 #include "Ram.h"
 
-namespace nesco
+namespace nesco::core
 {
     class PpuBus
     {
