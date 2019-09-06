@@ -71,15 +71,14 @@ namespace nesco
         int Render = 240;
         int PostRender = 241;
         int VBlank = 261;
-        int RecurrenceLine = 262;
-    } lineState;
+        int LineEnd = 262;
+    } LineState;
 
     const struct {
-        int FrameStart = 0;
-        int FrameEnd = 255;
-        int CycleEnd = 340;
-        int RecurrenceCycle = 341;
-    } cycleState;
+        int Frame = 255;
+        int HBlank = 340;
+        int CycleEnd = 341;
+    } CycleState;
 
     enum PpuStatusFlag {
         VBlankFlag = 0x80,
