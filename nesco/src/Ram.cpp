@@ -1,7 +1,5 @@
 #include "Ram.h"
 
-#define RAM_SIZE_MASK 0x7FF
-
 namespace nesco
 {
     Ram::Ram(uint16_t _size) : size(_size)
