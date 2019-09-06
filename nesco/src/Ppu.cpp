@@ -31,6 +31,34 @@ namespace nesco
 
     void Ppu::reset()
     {
+        cycle = scanline = 0;
+    }
+
+    void Ppu::step()
+    {
+        if (scanline <= lineState.PreRender) {
+
+        } else if (scanline <= lineState.Render) {
+            if (cycle <= cycleState.FrameEnd) {
+
+            }
+        } else if (scanline <= lineState.PostRender) {
+
+        } else if (scanline <= lineState.VBlank) {
+
+        } else {
+            // @ToDo: implement Abort
+        }
+
+        if (cycle == cycleState.CycleEnd) {
+            if (scanline++ == lineState.RecurrenceLine) {
+                scanline = 0;
+            }
+        }
+
+        if (cycle++ == cycleState.RecurrenceCycle) {
+            cycle = 0;
+        }
     }
 
 };

@@ -43,31 +43,19 @@ namespace nesco
      *  20|
      *  40|[  ] <- 1block(2x2 tiles): Each blocks are applied a BG No.
      *  60|[  ]
-     *  80|
-     *  A0|
-     *  C0|
-     *  E0|
-     * 100|
-     * 120|
-     * 140|
-     * 160|
-     * 180|
-     * 1A0|
-     * 1C0|       Z <- if this tile shows character "Z" in screen 0 and
-     * 1E0|            the character ROM is mapped as below.
-     * 200|            0x5A is written in address 0x01C3.
-     * 220|
-     * 240|              char ROM $00 xx
-     * 260|                       $01 xx
-     * 280|                        ...
-     * 2A0|                       $41 "A"
-     * 2C0|                        ...
-     * 2E0|                       $5A "Z"
-     * 300|                        ...
-     * 320|                       $01 xx
-     * 340|
-     * 360|
-     * 380|
+     * ...
+     * 220|       Z <- if this tile shows character "Z" in screen 0 and
+     * 240|            the character ROM is mapped as below.
+     * 260|            0x5A is written in address 0x0223.
+     * 280|
+     * 2A0|              char ROM $00 xx
+     * 2C0|                       $01 xx
+     * 2E0|                        ...
+     * 300|                       $41 "A"
+     * 320|                        ...
+     * 340|                       $5A "Z"
+     * 360|                        ...
+     * 380|                       $01 xx
      * 3A0|
      *
      */
@@ -78,6 +66,21 @@ namespace nesco
         uint8_t b;
     } Colors;
 
+    const struct {
+        int PreRender = 0;
+        int Render = 240;
+        int PostRender = 241;
+        int VBlank = 261;
+        int RecurrenceLine = 262;
+    } lineState;
+
+    const struct {
+        int FrameStart = 0;
+        int FrameEnd = 255;
+        int CycleEnd = 340;
+        int RecurrenceCycle = 341;
+    } cycleState;
+
     class Ppu
     {
     public:
@@ -85,10 +88,13 @@ namespace nesco
         ~Ppu();
 
         void reset();
+        void step();
 
     private:
         PpuBus *bus;
-        
+        uint8_t scanline;
+        uint8_t cycle;
+
         // Registers
         uint8_t PPUCTRL;    // W:  Control register 1
                             // LSB
