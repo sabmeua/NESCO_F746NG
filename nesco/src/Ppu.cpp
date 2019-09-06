@@ -62,26 +62,27 @@ namespace nesco
 
     uint8_t Ppu::readRegister(uint16_t addr)
     {
-        return 0;
+        return Register.index[addr % 0x2000];
     }
 
     void Ppu::writeRegister(uint16_t addr, uint8_t data)
     {
+        Register.index[addr % 0x2000] = data;
     }
 
     void Ppu::setFlag(PpuStatusFlag flag)
     {
-        PPUSTATUS |= flag;
+        Register.name.PPUSTATUS |= flag;
     }
 
     void Ppu::clearFlag(PpuStatusFlag flag)
     {
-        PPUSTATUS &= ~flag;
+        Register.name.PPUSTATUS &= ~flag;
     }
 
     bool Ppu::getFlag(PpuStatusFlag flag)
     {
-        return PPUSTATUS & flag;
+        return Register.name.PPUSTATUS & flag;
     }
 
     bool Ppu::isVBlank()
