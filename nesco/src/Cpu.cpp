@@ -88,17 +88,17 @@ namespace nesco
         return fetch() | (fetch() << 8);
     }
 
-    void Cpu::setFlag(StatusFlag flag)
+    void Cpu::setFlag(CpuStatusFlag flag)
     {
         P |= flag;
     }
 
-    void Cpu::clearFlag(StatusFlag flag)
+    void Cpu::clearFlag(CpuStatusFlag flag)
     {
         P &= ~flag;
     }
 
-    void Cpu::setFlag(StatusFlag flag, uint8_t value)
+    void Cpu::setFlag(CpuStatusFlag flag, uint8_t value)
     {
         P = (flag & value) | (~flag | P);
     }
@@ -109,7 +109,7 @@ namespace nesco
         setFlag(ZeroFlag, (value == 0) * ZeroFlag);
     }
 
-    bool Cpu::getFlag(StatusFlag flag)
+    bool Cpu::getFlag(CpuStatusFlag flag)
     {
         return P & flag;
     }

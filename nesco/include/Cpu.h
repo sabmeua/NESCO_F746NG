@@ -27,7 +27,7 @@ namespace nesco
     #define SP_BASE         0x00FD
     #define SP_OFFSET       0x0100  // Accessing stack as "SP | SP_OFFSET"
 
-    enum StatusFlag
+    enum CpuStatusFlag
     {
         CarryFlag    = 0x01,
         ZeroFlag     = 0x02,
@@ -112,11 +112,11 @@ namespace nesco
         void write(uint16_t addr, uint8_t data);
 
         // Status register operations
-        void setFlag(StatusFlag flag);
-        void setFlag(StatusFlag flag, uint8_t value);
+        void setFlag(CpuStatusFlag flag);
+        void setFlag(CpuStatusFlag flag, uint8_t value);
         void setFlagNZ(uint8_t value);
-        void clearFlag(StatusFlag flag);
-        bool getFlag(StatusFlag flag);
+        void clearFlag(CpuStatusFlag flag);
+        bool getFlag(CpuStatusFlag flag);
 
         uint16_t loadAddr(AddressingMode mode);
         bool checkPageCross(uint16_t addr1, uint16_t addr2);
