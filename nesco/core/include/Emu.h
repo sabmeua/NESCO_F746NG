@@ -3,6 +3,7 @@
 
 #include "Cpu.h"
 #include "Ppu.h"
+#include "Apu.h"
 #include "Ram.h"
 #include "CpuBus.h"
 #include "EmuDevice.h"
@@ -23,6 +24,7 @@ namespace nesco::core
 
         Cpu *cpu;
         Ppu *ppu;
+        Apu *apu;
         CpuBus *cpubus;
         PpuBus *ppubus;
         Ram *ram;

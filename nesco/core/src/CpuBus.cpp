@@ -2,8 +2,8 @@
 
 namespace nesco::core
 {
-    CpuBus::CpuBus(Ram *_ram, Ppu *_ppu) :
-        ram(_ram), ppu(_ppu)
+    CpuBus::CpuBus(Ram *_ram, Ppu *_ppu, Apu *_apu) :
+        ram(_ram), ppu(_ppu), apu(_apu)
     {
     }
 
@@ -36,6 +36,12 @@ namespace nesco::core
             ppu->writeRegister(addr, data);
         } else if (addr < 0x4000) {     // PPU Registers mirror * 1023
             ppu->writeRegister((addr % 8) | 0x2000, data);
+        } else if (addr == 0x4014) {    // DMA
+
+        } else if (addr == 0x4016 || addr == 0x4017) {  // Pad
+
+        } else if (addr < 0x4020) {     // APU
+            apu->writeRegister(addr, data);
         } else {
 
         }

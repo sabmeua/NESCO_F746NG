@@ -8,7 +8,8 @@ namespace nesco::core
         charmem = new Ram(0x4000);
         ppubus = new PpuBus(charmem);
         ppu = new Ppu(ppubus);
-        cpubus = new CpuBus(ram, ppu);
+        apu = new Apu();
+        cpubus = new CpuBus(ram, ppu, apu);
         cpu = new Cpu(cpubus);
     }
 
