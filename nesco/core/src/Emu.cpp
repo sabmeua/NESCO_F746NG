@@ -5,8 +5,7 @@ namespace nesco::core
     Emu::Emu(EmuDevice &_dev) : dev(_dev)
     {
         ram = new Ram(0x800);
-        charmem = new Ram(0x4000);
-        ppubus = new PpuBus(charmem);
+        ppubus = new PpuBus();
         ppu = new Ppu(ppubus);
         apu = new Apu();
         cpubus = new CpuBus(ram, ppu, apu);
@@ -20,7 +19,6 @@ namespace nesco::core
         delete ram;
         delete ppubus;
         delete ppu;
-        delete charmem;
     }
 
     void Emu::run()

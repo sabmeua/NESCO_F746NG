@@ -3,7 +3,7 @@
 namespace nesco::core
 {
 
-    PpuBus::PpuBus(Ram *_charmem) : charmem(_charmem)
+    PpuBus::PpuBus()
     {
     }
 

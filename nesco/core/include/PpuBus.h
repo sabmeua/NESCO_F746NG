@@ -8,10 +8,7 @@ namespace nesco::core
     class PpuBus
     {
     public:
-        PpuBus(Ram *_charmem);
-
-    private:
-        Ram *charmem;
+        PpuBus();
     };
 };
 

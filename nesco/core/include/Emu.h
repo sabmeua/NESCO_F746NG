@@ -28,7 +28,6 @@ namespace nesco::core
         CpuBus *cpubus;
         PpuBus *ppubus;
         Ram *ram;
-        Ram *charmem;
     };
 };
 
