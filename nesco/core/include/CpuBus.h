@@ -15,7 +15,7 @@ namespace nesco::core
         ~CpuBus();
 
         uint8_t read(uint16_t addr);
-        void write(uint16_t addr, uint8_t data);
+        uint16_t write(uint16_t addr, uint8_t data);
 
     private:
         Ram *ram;

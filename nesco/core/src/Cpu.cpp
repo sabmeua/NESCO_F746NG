@@ -43,7 +43,7 @@ namespace nesco::core
 
     void Cpu::write(uint16_t addr, uint8_t data)
     {
-        bus->write(addr, data);
+        skipCycle += bus->write(addr, data);
     }
 
     uint8_t Cpu::read(uint16_t addr)

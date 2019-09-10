@@ -26,8 +26,10 @@ namespace nesco::core
         }
     }
 
-    void CpuBus::write(uint16_t addr, uint8_t data)
+    uint16_t CpuBus::write(uint16_t addr, uint8_t data)
     {
+        uint16_t exCycle = 0;
+
         if (addr < 0x0800) {            // RAM access
             ram->write(addr, data);
         } else if (addr < 0x2000) {     // RAM mirror * 3
@@ -37,7 +39,7 @@ namespace nesco::core
         } else if (addr < 0x4000) {     // PPU Registers mirror * 1023
             ppu->writeRegister((addr % 8) | 0x2000, data);
         } else if (addr == 0x4014) {    // DMA
-
+            exCycle = 512;
         } else if (addr == 0x4016 || addr == 0x4017) {  // Pad
 
         } else if (addr < 0x4020) {     // APU
@@ -45,5 +47,7 @@ namespace nesco::core
         } else {
 
         }
+
+        return exCycle;
     }
 };
