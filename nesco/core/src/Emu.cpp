@@ -7,8 +7,9 @@ namespace nesco::core
         ram = new Ram(0x800);
         ppubus = new PpuBus();
         ppu = new Ppu(ppubus);
+        dma = new Dma(ram, ppu);
         apu = new Apu();
-        cpubus = new CpuBus(ram, ppu, apu);
+        cpubus = new CpuBus(ram, ppu, apu, dma);
         cpu = new Cpu(cpubus);
     }
 
@@ -19,6 +20,7 @@ namespace nesco::core
         delete ram;
         delete ppubus;
         delete ppu;
+        delete dma;
     }
 
     void Emu::run()

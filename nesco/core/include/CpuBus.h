@@ -4,13 +4,14 @@
 #include "Ram.h"
 #include "Ppu.h"
 #include "Apu.h"
+#include "Dma.h"
 
 namespace nesco::core
 {
     class CpuBus
     {
     public:
-        CpuBus(Ram *_ram, Ppu *_ppu, Apu *_apu);
+        CpuBus(Ram *_ram, Ppu *_ppu, Apu *_apu, Dma *_dma);
         ~CpuBus();
 
         uint8_t read(uint16_t addr);
@@ -20,6 +21,7 @@ namespace nesco::core
         Ram *ram;
         Ppu *ppu;
         Apu *apu;
+        Dma *dma;
     };
 };
 

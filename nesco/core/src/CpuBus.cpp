@@ -2,8 +2,8 @@
 
 namespace nesco::core
 {
-    CpuBus::CpuBus(Ram *_ram, Ppu *_ppu, Apu *_apu) :
-        ram(_ram), ppu(_ppu), apu(_apu)
+    CpuBus::CpuBus(Ram *_ram, Ppu *_ppu, Apu *_apu, Dma *_dma) :
+        ram(_ram), ppu(_ppu), apu(_apu), dma(_dma)
     {
     }
 
