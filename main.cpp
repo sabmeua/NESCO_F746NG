@@ -1,14 +1,11 @@
-#include "mbed.h"
+#include "nesco_config.h"
 #include "Emu.h"
-#include "nesco/device/DiscoF746NG.h"
 
-using namespace nesco;
-
-device::EmuDevice_DiscoF746NG emu746ng;
+NescoDevice dev;
 
 int main()
 {
-    core::Emu *emu = new core::Emu(emu746ng);
+    nesco::core::Emu *emu = new nesco::core::Emu(dev);
     emu->run();
     return 0;
 }
