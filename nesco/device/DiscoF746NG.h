@@ -5,7 +5,7 @@
 
 namespace nesco::device
 {
-    class EmuDevice_DiscoF746NG : public core::EmuDevice
+    class DiscoF746NG : public core::EmuDevice
     {
     public:
         void reset();

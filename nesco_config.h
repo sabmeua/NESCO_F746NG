@@ -25,7 +25,7 @@
 
     #if defined NESCO_DEVICE_DISCOF746NG
         #include "nesco/device/DiscoF746NG.h"
-        typedef nesco::device::EmuDevice_DiscoF746NG NescoDevice;
+        typedef nesco::device::DiscoF746NG NescoDevice;
     #endif
 
 #endif

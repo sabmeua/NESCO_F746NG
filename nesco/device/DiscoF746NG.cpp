@@ -19,7 +19,7 @@ namespace nesco::device
     {
     } keypad746ng;
 
-    void EmuDevice_DiscoF746NG::reset()
+    void DiscoF746NG::reset()
     {
     }
 };
