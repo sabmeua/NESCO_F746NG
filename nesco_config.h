@@ -12,8 +12,7 @@
  */
 #if defined NESCO_PLATFORM_GLUT
 
-    #include <GL/glut.h>
-    #include "nesco/device/glut.h"
+    #include "nesco/device/Glut.h"
 
 #elif defined NESCO_PLATFORM_MBED
 
