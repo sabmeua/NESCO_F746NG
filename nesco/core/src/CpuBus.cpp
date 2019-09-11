@@ -39,7 +39,7 @@ namespace nesco::core
         } else if (addr < 0x4000) {     // PPU Registers mirror * 1023
             ppu->writeRegister((addr % 8) | 0x2000, data);
         } else if (addr == 0x4014) {    // DMA
-            exCycle = 512;
+            exCycle = 514;
         } else if (addr == 0x4016 || addr == 0x4017) {  // Pad
 
         } else if (addr < 0x4020) {     // APU
