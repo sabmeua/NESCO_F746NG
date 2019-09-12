@@ -5,9 +5,15 @@
 
 namespace nesco::core
 {
+    enum ApuFrameSequenceMode {
+        SequenceMode4Step = 0x00,
+        SequenceMode5Step = 0x80,
+    };
+
     class Apu
     {
     public:
+        void step();
         void writeRegister(uint16_t addr, uint8_t data);
         uint8_t readRegister(uint16_t addr);
 
@@ -52,6 +58,7 @@ namespace nesco::core
             uint8_t index[0x18];
         } Register;
 
+        ApuFrameSequenceMode getFrameSequenceMode();
     };
 };
 #endif

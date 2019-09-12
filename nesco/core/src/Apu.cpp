@@ -2,6 +2,17 @@
 
 namespace nesco::core
 {
+    void Apu::step()
+    {
+        switch(getFrameSequenceMode()) {
+            case SequenceMode4Step:
+                break;
+            case SequenceMode5Step:
+                break;
+            default:
+                break;
+        }
+    }
 
     void Apu::writeRegister(uint16_t addr, uint8_t data)
     {
@@ -21,6 +32,11 @@ namespace nesco::core
             data = Register.index[addr % 0x4000];
         }
         return data;
+    }
+
+    ApuFrameSequenceMode Apu::getFrameSequenceMode()
+    {
+        return static_cast<ApuFrameSequenceMode>(Register.name.SOUND_CTRL & 0x80);
     }
 
 };
