@@ -17,11 +17,8 @@ namespace nesco::core
     uint8_t Apu::readRegister(uint16_t addr)
     {
         uint8_t data = 0;
-        uint16_t idx = addr % 0x4000;
-        if (idx <= 0x17 && (idx != 0x14 || idx != 0x16)) {
-            data = Register.index[idx];
-        } else {
-            // Abort
+        if (addr == 0x4015) {
+            data = Register.index[addr % 0x4000];
         }
         return data;
     }
