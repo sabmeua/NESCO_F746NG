@@ -9,7 +9,7 @@ namespace nesco::core
         /**
          * 4 step mode
          *
-         * step     1 2 3 4
+         * step     0 1 2 3
          * ----------------
          * irqflag  - - - o
          * counter  - o - o
@@ -19,7 +19,7 @@ namespace nesco::core
         /**
          * 5 step mode
          *
-         * step     1 2 3 4 5
+         * step     0 1 2 3 4
          * ------------------
          * irqflag  - - - - -
          * counter  o - o - -

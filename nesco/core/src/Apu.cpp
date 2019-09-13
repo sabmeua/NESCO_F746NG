@@ -6,7 +6,8 @@ namespace nesco::core
     {
     public:
         ApuChannel(Apu *_apu) : apu(_apu) {};
-        virtual void step() = 0;
+        void envelope() {};
+        void counter() {};
     private:
         Apu *apu;
     };
@@ -15,32 +16,24 @@ namespace nesco::core
     {
     public:
         PulseChannel(Apu *_apu) : ApuChannel(_apu) {};
-        void step() {
-        };
     };
 
     class TriangleChannel : public ApuChannel
     {
     public:
         TriangleChannel(Apu *_apu) : ApuChannel(_apu) {};
-        void step() {
-        };
     };
 
     class NoiseChannel : public ApuChannel
     {
     public:
         NoiseChannel(Apu *_apu) : ApuChannel(_apu) {};
-        void step() {
-        };
     };
 
     class DmcChannel : public ApuChannel
     {
     public:
         DmcChannel(Apu *_apu) : ApuChannel(_apu) {};
-        void step() {
-        };
     };
 
     Apu::Apu()
@@ -56,32 +49,30 @@ namespace nesco::core
     void Apu::step()
     {
         ApuFrameSequenceMode mode = getFrameSequenceMode();
-
-        cycle++;
         switch(mode) {
             case SequenceMode4Step:
                 if (1) {
                     envelope();
                 }
-                if (cycle % 2 == 0) {
+                if (cycle % 2 == 1) {
                     counter();
                 }
-                if (cycle == 4) {
+                if (cycle == 3) {
                     irqflag(true);
                 }
                 break;
             case SequenceMode5Step:
-                if (cycle <= 4) {
+                if (cycle <= 3) {
                     envelope();
-                }
-                if (cycle % 2 == 1) {
-                    counter();
+                    if (cycle % 2 == 0) {
+                        counter();
+                    }
                 }
                 break;
             default:
                 break;
         }
-        if (cycle == (4 + mode)) {
+        if (++cycle == (4 + mode)) {
             cycle = 0;
         }
     }
@@ -113,10 +104,17 @@ namespace nesco::core
 
     void Apu::envelope()
     {
+        pulse1->envelope();
+        pulse2->envelope();
+        noise->envelope();
     }
 
     void Apu::counter()
     {
+        pulse1->counter();
+        pulse2->counter();
+        triangle->counter();
+        noise->counter();
     }
 
     void Apu::irqflag(bool set)
