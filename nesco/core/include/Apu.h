@@ -6,18 +6,54 @@
 namespace nesco::core
 {
     enum ApuFrameSequenceMode {
-        SequenceMode4Step = 0x00,
-        SequenceMode5Step = 0x80,
+        /**
+         * 4 step mode
+         *
+         * step     1 2 3 4
+         * ----------------
+         * irqflag  - - - o
+         * counter  - o - o
+         * envelope o o o o
+         */
+        SequenceMode4Step,
+        /**
+         * 5 step mode
+         *
+         * step     1 2 3 4 5
+         * ------------------
+         * irqflag  - - - - -
+         * counter  o - o - -
+         * envelope o o o o -
+         */
+        SequenceMode5Step,
     };
+
+    class PulseChannel;
+    class TriangleChannel;
+    class NoiseChannel;
+    class DmcChannel;
 
     class Apu
     {
     public:
+        Apu();
         void step();
         void writeRegister(uint16_t addr, uint8_t data);
         uint8_t readRegister(uint16_t addr);
 
     private:
+        friend class PulseChannel;
+        PulseChannel *pulse1;
+        PulseChannel *pulse2;
+        friend class TriangleChannel;
+        TriangleChannel *triangle;
+        friend class NoiseChannel;
+        NoiseChannel *noise;
+        friend class DmcChannel;
+        DmcChannel *dmc;
+
+        uint8_t cycle;
+
         // Registers
         union u_register {
             // For access by name
@@ -57,6 +93,10 @@ namespace nesco::core
             // For access by index (index <- addr % 0x4000)
             uint8_t index[0x18];
         } Register;
+
+        void counter();
+        void envelope();
+        void irqflag(bool set);
 
         ApuFrameSequenceMode getFrameSequenceMode();
     };

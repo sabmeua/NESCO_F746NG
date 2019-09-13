@@ -2,15 +2,87 @@
 
 namespace nesco::core
 {
+    class ApuChannel
+    {
+    public:
+        ApuChannel(Apu *_apu) : apu(_apu) {};
+        virtual void step() = 0;
+    private:
+        Apu *apu;
+    };
+
+    class PulseChannel : public ApuChannel
+    {
+    public:
+        PulseChannel(Apu *_apu) : ApuChannel(_apu) {};
+        void step() {
+        };
+    };
+
+    class TriangleChannel : public ApuChannel
+    {
+    public:
+        TriangleChannel(Apu *_apu) : ApuChannel(_apu) {};
+        void step() {
+        };
+    };
+
+    class NoiseChannel : public ApuChannel
+    {
+    public:
+        NoiseChannel(Apu *_apu) : ApuChannel(_apu) {};
+        void step() {
+        };
+    };
+
+    class DmcChannel : public ApuChannel
+    {
+    public:
+        DmcChannel(Apu *_apu) : ApuChannel(_apu) {};
+        void step() {
+        };
+    };
+
+    Apu::Apu()
+    {
+        pulse1 = new PulseChannel(this);
+        pulse2 = new PulseChannel(this);
+        triangle = new TriangleChannel(this);
+        noise = new NoiseChannel(this);
+        dmc = new DmcChannel(this);
+        cycle = 0;
+    }
+
     void Apu::step()
     {
-        switch(getFrameSequenceMode()) {
+        ApuFrameSequenceMode mode = getFrameSequenceMode();
+
+        cycle++;
+        switch(mode) {
             case SequenceMode4Step:
+                if (1) {
+                    envelope();
+                }
+                if (cycle % 2 == 0) {
+                    counter();
+                }
+                if (cycle == 4) {
+                    irqflag(true);
+                }
                 break;
             case SequenceMode5Step:
+                if (cycle <= 4) {
+                    envelope();
+                }
+                if (cycle % 2 == 1) {
+                    counter();
+                }
                 break;
             default:
                 break;
+        }
+        if (cycle == (4 + mode)) {
+            cycle = 0;
         }
     }
 
@@ -36,7 +108,19 @@ namespace nesco::core
 
     ApuFrameSequenceMode Apu::getFrameSequenceMode()
     {
-        return static_cast<ApuFrameSequenceMode>(Register.name.SOUND_CTRL & 0x80);
+        return static_cast<ApuFrameSequenceMode>(Register.name.SOUND_CTRL / 0x80);
+    }
+
+    void Apu::envelope()
+    {
+    }
+
+    void Apu::counter()
+    {
+    }
+
+    void Apu::irqflag(bool set)
+    {
     }
 
 };
