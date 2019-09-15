@@ -31,15 +31,46 @@ namespace nesco::core
     class ApuChannel
     {
     public:
-        void envelope() {};
+        void start() {};
+        void stop() {};
+
+        void envelope() {
+            if (dividerReset) {
+                envelopeCounter = 0x0F;
+                envelopeCycle = (Register.name.CTRL1 & 0x0F) + 1;
+                dividerReset = false;
+            } else {
+                if (envelopeCounter == 0) {
+                    if (Register.name.CTRL1 & 0x20) {
+                        envelopeCounter = 0x0F;
+                    }
+                } else {
+                    envelopeCounter--;
+                }
+                volume = Register.name.CTRL1 & 0x10 ?
+                    Register.name.CTRL1 & 0x0F : envelopeCounter;
+            }
+        };
+
         void counter() {};
+
         uint8_t readRegister(uint16_t addr) {
             return Register.index[addr % 0x4000 % 4];
         };
+
         void writeRegister(uint16_t addr, uint8_t data) {
-            Register.index[addr % 0x4000 % 4] = data;
+            int idx = addr % 0x4000 % 4;
+            Register.index[idx] = data;
+            if (idx == 3) {
+                dividerReset = true;
+            }
         };
     protected:
+        uint8_t volume;
+        bool dividerReset;
+        uint8_t envelopeCounter;
+        uint8_t envelopeCycle;
+
         // Registers
         union u_register {
             // For access by name
