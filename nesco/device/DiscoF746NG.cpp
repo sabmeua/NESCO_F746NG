@@ -3,7 +3,7 @@
 namespace nesco::device
 {
     BlockDevice *bd = BlockDevice::get_default_instance();
-    FATFileSystem fs("sd");
+    NescoFileSystem fs("fs");
 
     void DiscoF746NG::reset()
     {
@@ -13,9 +13,9 @@ namespace nesco::device
         }
     }
 
-    ifstream &DiscoF746NG::load(const char *path)
+    FILE *DiscoF746NG::load(const char *path)
     {
-        cartridgeFile.open(path, ios::in);
+        cartridgeFile = fopen(path, "r");
         if (!cartridgeFile) {
             // @ToDo: abort
         }

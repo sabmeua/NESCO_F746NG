@@ -1,24 +1,32 @@
 #ifndef NESCO_EMU_DEVICE_DISCOF746NG_H
 #define NESCO_EMU_DEVICE_DISCOF746NG_H
 
-#include <fstream>
-
 #include "mbed.h"
-#include "FATFileSystem.h"
 #include "BlockDevice.h"
 #include "EmuDevice.h"
 
-using namespace std;
+#define NESCO_DEBUG
+#ifdef NESCO_DEBUG
+    #include "FATFileSystem.h"
+#else
+    #include "LittleFileSystem.h"
+#endif
 
 namespace nesco::device
 {
+#ifdef NESCO_DEBUG
+    typedef FATFileSystem NescoFileSystem;
+#else
+    typedef LittleFileSystem NescoFileSystem;
+#endif
+
     class DiscoF746NG : public core::EmuDevice
     {
     public:
         void reset();
-        ifstream &load(const char *path);
+        FILE *load(const char *path);
     private:
-        ifstream cartridgeFile;
+        FILE *cartridgeFile;
     };
 };
 
