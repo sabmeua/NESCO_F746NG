@@ -1,7 +1,14 @@
 #ifndef NESCO_EMU_DEVICE_DISCOF746NG_H
 #define NESCO_EMU_DEVICE_DISCOF746NG_H
 
+#include <fstream>
+
+#include "mbed.h"
+#include "FATFileSystem.h"
+#include "BlockDevice.h"
 #include "EmuDevice.h"
+
+using namespace std;
 
 namespace nesco::device
 {
@@ -9,7 +16,9 @@ namespace nesco::device
     {
     public:
         void reset();
-        void load(const char *path);
+        ifstream &load(const char *path);
+    private:
+        ifstream cartridgeFile;
     };
 };
 
