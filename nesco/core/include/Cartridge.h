@@ -1,7 +1,8 @@
 #ifndef NESCO_CARTRIDGE_H
 #define NESCO_CARTRIDGE_H
 
-#include <EmuDevice.h>
+#include <cstdint>
+#include "EmuDevice.h"
 
 namespace nesco::core
 {

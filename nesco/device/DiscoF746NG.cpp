@@ -1,5 +1,6 @@
 #include "mbed.h"
 #include "nesco/device/DiscoF746NG.h"
+#include "FATFileSystem.h"
 
 namespace nesco::device
 {
