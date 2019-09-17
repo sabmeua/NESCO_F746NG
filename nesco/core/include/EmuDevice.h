@@ -8,7 +8,11 @@
 
 namespace nesco::core
 {
-    class EmuDevice
+    class EmuDevice :
+        public hal::DisplayHal,
+        public hal::SoundHal,
+        public hal::FilesystemHal,
+        public hal::KeypadHal
     {
     public:
         virtual void reset() = 0;

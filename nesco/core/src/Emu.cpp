@@ -34,4 +34,9 @@ namespace nesco::core
         cpu->reset();
         ppu->reset();
     }
+
+    void Emu::load(Cartridge *_cartridge)
+    {
+        cartridge = _cartridge;
+    }
 };

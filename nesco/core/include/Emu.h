@@ -6,6 +6,7 @@
 #include "Apu.h"
 #include "Ram.h"
 #include "CpuBus.h"
+#include "Cartridge.h"
 #include "EmuDevice.h"
 
 namespace nesco::core
@@ -18,6 +19,7 @@ namespace nesco::core
     
         void run();
         void reset();
+        void load(Cartridge *_catridge);
 
     private:
         EmuDevice &dev;
@@ -29,6 +31,7 @@ namespace nesco::core
         PpuBus *ppubus;
         Ram *ram;
         Dma *dma;
+        Cartridge *cartridge;
     };
 };
 

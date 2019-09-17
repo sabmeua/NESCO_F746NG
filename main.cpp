@@ -3,9 +3,14 @@
 
 NescoDevice dev;
 
+using namespace nesco::core;
+
 int main()
 {
-    nesco::core::Emu *emu = new nesco::core::Emu(dev);
+    Emu *emu = new Emu(dev);
+    Cartridge *cart = Cartridge::load(&dev, "sample/helloworld.nes");
+    emu->load(cart);
+    emu->reset();
     emu->run();
     return 0;
 }

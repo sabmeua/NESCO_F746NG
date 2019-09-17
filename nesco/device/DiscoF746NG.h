@@ -9,6 +9,7 @@ namespace nesco::device
     {
     public:
         void reset();
+        void load(const char *path);
     };
 };
 
