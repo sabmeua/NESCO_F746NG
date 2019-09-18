@@ -11,15 +11,23 @@ namespace nesco::device
             // Filesystem not found, need to format.
             // @ToDo: Abort
         }
+
+        if (cartridgefp) {
+            fclose(cartridgefp);
+        }
     }
 
     FILE *DiscoF746NG::load(const char *path)
     {
-        cartridgeFile = fopen(path, "r");
-        if (!cartridgeFile) {
-            // @ToDo: abort
+        if (cartridgefp) {
+            fclose(cartridgefp);
         }
 
-        return cartridgeFile;
+        cartridgefp = fopen(path, "r");
+        if (!cartridgefp) {
+            // @ToDo: throw Exception
+        }
+
+        return cartridgefp;
     }
 };
