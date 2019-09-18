@@ -5,6 +5,8 @@ namespace nesco::hal
 {
     class KeypadHal
     {
+    public:
+        virtual void init() = 0;
     };
 };
 

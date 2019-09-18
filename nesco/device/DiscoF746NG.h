@@ -21,12 +21,10 @@ using namespace nesco::hal;
 
 namespace nesco::device
 {
-    class DiscoF746NG : public EmuDevice
+    class FilesystemDiscoF746NG : public FilesystemHal
     {
     public:
-        void reset();
-
-        // Filesytem I/F
+        void init();
         NescoFileHandle open(const char *key, const char *mode);
         bool read(NescoFileHandle h, uint8_t *buff, unsigned int size) {
             return true;
@@ -44,6 +42,30 @@ namespace nesco::device
             return true;
         }
         void close(NescoFileHandle h) {}
+    };
+
+    class DisplayDiscoF746NG : public DisplayHal
+    {
+    public:
+        void init() {}
+    };
+
+    class SoundDiscoF746NG : public SoundHal
+    {
+    public:
+        void init() {}
+    };
+
+    class KeypadDiscoF746NG : public KeypadHal
+    {
+    public:
+        void init() {}
+    };
+
+    class DiscoF746NG : public EmuDevice
+    {
+    public:
+        DiscoF746NG();
     };
 };
 

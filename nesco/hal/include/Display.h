@@ -5,6 +5,8 @@ namespace nesco::hal
 {
     class DisplayHal
     {
+    public:
+        virtual void init() = 0;
     };
 };
 

@@ -10,11 +10,20 @@ using namespace nesco::hal;
 
 namespace nesco::core
 {
-    class EmuDevice :
-        public DisplayHal, public SoundHal, public FilesystemHal, public KeypadHal
+    class EmuDevice
     {
     public:
-        virtual void reset() = 0;
+        void reset() {
+            display->init();
+            sound->init();
+            filesystem->init();
+            keypad->init();
+        };
+
+        DisplayHal *display;
+        SoundHal *sound;
+        FilesystemHal *filesystem;
+        KeypadHal *keypad;
     };
 
 };

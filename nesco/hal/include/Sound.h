@@ -5,6 +5,8 @@ namespace nesco::hal
 {
     class SoundHal
     {
+    public:
+        virtual void init() = 0;
     };
 };
 

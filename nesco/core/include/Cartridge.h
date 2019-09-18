@@ -10,7 +10,7 @@ namespace nesco::core
     public:
         static Cartridge *load(EmuDevice *dev, const char *path)
         {
-            hal::NescoFileHandle fp = dev->open(path, "r");
+            hal::NescoFileHandle fp = dev->filesystem->open(path, "r");
             return new Cartridge();
         };
 

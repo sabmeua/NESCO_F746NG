@@ -5,7 +5,15 @@ namespace nesco::device
     BlockDevice *bd = BlockDevice::get_default_instance();
     NescoFileSystem fs("fs");
 
-    void DiscoF746NG::reset()
+    DiscoF746NG::DiscoF746NG()
+    {
+        display = new DisplayDiscoF746NG();
+        filesystem = new FilesystemDiscoF746NG();
+        sound = new SoundDiscoF746NG();
+        keypad = new KeypadDiscoF746NG();
+    }
+
+    void FilesystemDiscoF746NG::init()
     {
         if (fs.mount(bd)) {
             // Filesystem not found, need to format.
@@ -13,7 +21,7 @@ namespace nesco::device
         }
     }
 
-    NescoFileHandle DiscoF746NG::open(const char *key, const char *mode)
+    NescoFileHandle FilesystemDiscoF746NG::open(const char *key, const char *mode)
     {
         FILE *fp = fopen(key, mode);
         if (!fp) {

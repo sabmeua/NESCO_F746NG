@@ -10,6 +10,8 @@ namespace nesco::hal
     class FilesystemHal
     {
     public:
+        virtual void init() = 0;
+
         virtual NescoFileHandle open(const char *key, const char *mode) = 0;
         virtual bool read(NescoFileHandle h, uint8_t *buff, unsigned int size) = 0;
         virtual bool write(NescoFileHandle h, uint8_t *buff, unsigned int size) = 0;
