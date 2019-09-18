@@ -1,8 +1,7 @@
 #ifndef NESCO_CARTRIDGE_H
 #define NESCO_CARTRIDGE_H
 
-#include <cstdint>
-#include "EmuDevice.h"
+#include <EmuDevice.h>
 
 namespace nesco::core
 {
@@ -11,7 +10,7 @@ namespace nesco::core
     public:
         static Cartridge *load(EmuDevice *dev, const char *path)
         {
-            dev->load(path);
+            hal::NescoFileHandle fp = dev->open(path, "r");
             return new Cartridge();
         };
 
