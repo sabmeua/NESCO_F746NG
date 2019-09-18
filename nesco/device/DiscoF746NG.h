@@ -26,12 +26,8 @@ namespace nesco::device
     public:
         void init();
         NescoFileHandle open(const char *key, const char *mode);
-        bool read(NescoFileHandle h, uint8_t *buff, unsigned int size) {
-            return true;
-        }
-        bool write(NescoFileHandle h, uint8_t *buff, unsigned int size) {
-            return true;
-        }
+        bool read(NescoFileHandle h, uint8_t *buff, uint32_t size);
+        bool write(NescoFileHandle h, uint8_t *buff, uint32_t size);
         bool seek(NescoFileHandle h, uint32_t offset, uint8_t origin) {
             return true;
         }

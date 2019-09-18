@@ -30,4 +30,17 @@ namespace nesco::device
 
         return static_cast<NescoFileHandle>(fp);
     }
+
+    bool FilesystemDiscoF746NG::read(NescoFileHandle h, uint8_t *buff, uint32_t size)
+    {
+        FILE *fp = static_cast<FILE *>(h);
+
+        uint32_t result = fread(buff, sizeof(uint8_t), size, fp);
+        return true;
+    }
+
+    bool FilesystemDiscoF746NG::write(NescoFileHandle h, uint8_t *buff, uint32_t size)
+    {
+        return true;
+    }
 };
