@@ -1,5 +1,5 @@
-#ifndef NESCO_APU_H
-#define NESCO_APU_H
+#ifndef NESCO_CORE_APU_H
+#define NESCO_CORE_APU_H
 
 #include <cstdint>
 

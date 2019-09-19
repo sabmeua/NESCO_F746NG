@@ -1,5 +1,5 @@
-#ifndef NESCO_EMU_DEVICE_GLUT_H
-#define NESCO_EMU_DEVICE_GLUT_H
+#ifndef NESCO_DEVICE_GLUT_H
+#define NESCO_DEVICE_GLUT_H
 
 #include "EmuDevice.h"
 

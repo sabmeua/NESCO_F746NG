@@ -1,5 +1,5 @@
-#ifndef NESCO_EMU_DEVICE_H
-#define NESCO_EMU_DEVICE_H
+#ifndef NESCO_CORE_EMU_DEVICE_H
+#define NESCO_CORE_EMU_DEVICE_H
 
 #include "hal/include/DisplayHal.h"
 #include "hal/include/SoundHal.h"

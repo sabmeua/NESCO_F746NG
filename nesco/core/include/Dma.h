@@ -1,5 +1,5 @@
-#ifndef NESCO_DMA_H
-#define NESCO_DMA_H
+#ifndef NESCO_CORE_DMA_H
+#define NESCO_CORE_DMA_H
 
 #include "Ram.h"
 #include "Ppu.h"

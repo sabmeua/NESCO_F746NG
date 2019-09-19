@@ -1,5 +1,5 @@
-#ifndef NESCO_PPU_H
-#define NESCO_PPU_H
+#ifndef NESCO_CORE_PPU_H
+#define NESCO_CORE_PPU_H
 
 #include <cstdint>
 #include "PpuBus.h"

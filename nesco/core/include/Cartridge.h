@@ -1,5 +1,5 @@
-#ifndef NESCO_CARTRIDGE_H
-#define NESCO_CARTRIDGE_H
+#ifndef NESCO_CORE_CARTRIDGE_H
+#define NESCO_CORE_CARTRIDGE_H
 
 #include "EmuDevice.h"
 #include "Rom.h"

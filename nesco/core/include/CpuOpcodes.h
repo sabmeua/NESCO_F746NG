@@ -1,5 +1,5 @@
-#ifndef NESCO_OPCODE_H
-#define NESCO_OPCODE_H
+#ifndef NESCO_CORE_CPU_OPCODE_H
+#define NESCO_CORE_CPU_OPCODE_H
 
 namespace nesco::core
 {

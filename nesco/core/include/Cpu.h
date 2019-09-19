@@ -1,5 +1,5 @@
-#ifndef NESCO_CPU_H
-#define NESCO_CPU_H
+#ifndef NESCO_CORE_CPU_H
+#define NESCO_CORE_CPU_H
 
 #include <cstdint>
 #include "CpuBus.h"

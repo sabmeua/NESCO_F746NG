@@ -1,5 +1,5 @@
-#ifndef NESCO_ROM_H
-#define NESCO_ROM_H
+#ifndef NESCO_CORE_ROM_H
+#define NESCO_CORE_ROM_H
 
 #include <cstdint>
 

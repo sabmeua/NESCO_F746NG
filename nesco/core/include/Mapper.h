@@ -1,5 +1,5 @@
-#ifndef NESCO_MAPPER_H
-#define NESCO_MAPPER_H
+#ifndef NESCO_CORE_MAPPER_H
+#define NESCO_CORE_MAPPER_H
 
 namespace nesco::core
 {

@@ -1,5 +1,5 @@
-#ifndef NESCO_EMU_H
-#define NESCO_EMU_H
+#ifndef NESCO_CORE_EMU_H
+#define NESCO_CORE_EMU_H
 
 #include "Cpu.h"
 #include "Ppu.h"

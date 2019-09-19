@@ -1,5 +1,5 @@
-#ifndef NESCO_EMU_DEVICE_DISCOF746NG_H
-#define NESCO_EMU_DEVICE_DISCOF746NG_H
+#ifndef NESCO_DEVICE_DISCOF746NG_H
+#define NESCO_DEVICE_DISCOF746NG_H
 
 #include "EmuDevice.h"
 #include "MbedFilesystem.h"

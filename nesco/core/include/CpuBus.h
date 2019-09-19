@@ -1,5 +1,5 @@
-#ifndef NESCO_BUS_H
-#define NESCO_BUS_H
+#ifndef NESCO_CORE_CPU_BUS_H
+#define NESCO_CORE_CPU_BUS_H
 
 #include "Ram.h"
 #include "Ppu.h"

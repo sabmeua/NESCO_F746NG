@@ -1,5 +1,5 @@
-#ifndef NESCO_RAM_H
-#define NESCO_RAM_H
+#ifndef NESCO_CORE_RAM_H
+#define NESCO_CORE_RAM_H
 
 #include <cstdint>
 
