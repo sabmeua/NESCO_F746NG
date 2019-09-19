@@ -47,10 +47,22 @@ namespace nesco::core
         }
 
         // Check mapper number
-        mapperNo = ((header[6] & 0xF0) >> 4) | (header[7] & 0xF0);
+        uint8_t mapperNo = ((header[6] & 0xF0) >> 4) | (header[7] & 0xF0);
+        mapper = new Mapper0();
 
         dev.filesystem->close(h);
 
         return true;
     }
+
+    uint8_t Cartridge::read(uint16_t addr)
+    {
+        return mapper->read(addr);
+    }
+
+    void Cartridge::write(uint16_t addr, uint8_t data)
+    {
+        mapper->write(addr, data);
+    }
+
 };

@@ -3,6 +3,7 @@
 
 #include "EmuDevice.h"
 #include "Rom.h"
+#include "Mapper.h"
 
 namespace nesco::core
 {
@@ -20,13 +21,17 @@ namespace nesco::core
 
         uint8_t mirroingMode() { return header[6] & 0x01; }
 
-        Rom *progRom;
-        Rom *charRom;
+        uint8_t read(uint16_t addr);
+        void write(uint16_t addr, uint8_t data);
 
     private:
         EmuDevice &dev;
         uint8_t header[INES_HEADER_SIZE];
-        uint8_t mapperNo;
+
+        Mapper *mapper;
+
+        Rom *progRom;
+        Rom *charRom;
 
         uint8_t progPageNum() { return header[4]; }
         uint8_t charPageNum() { return header[5]; }
