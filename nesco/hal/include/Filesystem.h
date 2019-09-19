@@ -16,8 +16,8 @@ namespace nesco::hal
         virtual bool read(NescoFileHandle h, uint8_t *buff, uint32_t size) = 0;
         virtual bool write(NescoFileHandle h, uint8_t *buff, uint32_t size) = 0;
         virtual bool seek(NescoFileHandle h, uint32_t offset, uint8_t origin) = 0;
-        virtual bool readLine(NescoFileHandle h, uint8_t *buff) = 0;
-        virtual bool writeLine(NescoFileHandle h, uint8_t *buff) = 0;
+        virtual bool readLine(NescoFileHandle h, char *buff) = 0;
+        virtual bool writeLine(NescoFileHandle h, const char *buff) = 0;
         virtual void close(NescoFileHandle h) = 0;
     };
 };

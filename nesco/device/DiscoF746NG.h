@@ -28,16 +28,10 @@ namespace nesco::device
         NescoFileHandle open(const char *key, const char *mode);
         bool read(NescoFileHandle h, uint8_t *buff, uint32_t size);
         bool write(NescoFileHandle h, uint8_t *buff, uint32_t size);
-        bool seek(NescoFileHandle h, uint32_t offset, uint8_t origin) {
-            return true;
-        }
-        bool readLine(NescoFileHandle h, uint8_t *buff) {
-            return true;
-        }
-        bool writeLine(NescoFileHandle h, uint8_t *buff) {
-            return true;
-        }
-        void close(NescoFileHandle h) {}
+        bool seek(NescoFileHandle h, uint32_t offset, uint8_t origin);
+        bool readLine(NescoFileHandle h, char *buff);
+        bool writeLine(NescoFileHandle h, const char *buff);
+        void close(NescoFileHandle h);
     };
 
     class DisplayDiscoF746NG : public DisplayHal
