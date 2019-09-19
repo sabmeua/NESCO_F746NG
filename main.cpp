@@ -8,7 +8,8 @@ using namespace nesco::core;
 int main()
 {
     Emu *emu = new Emu(dev);
-    Cartridge *cart = Cartridge::load(&dev, "sample/helloworld.nes");
+    Cartridge *cart = new Cartridge(dev);
+    cart->parse("sample/helloworld.nes");
     emu->load(cart);
     emu->reset();
     emu->run();
