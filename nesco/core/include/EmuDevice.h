@@ -5,6 +5,7 @@
 #include "hal/include/SoundHal.h"
 #include "hal/include/FilesystemHal.h"
 #include "hal/include/KeypadHal.h"
+#include "hal/include/LoggerHal.h"
 
 using namespace nesco::hal;
 
@@ -24,6 +25,7 @@ namespace nesco::core
         SoundHal *sound;
         FilesystemHal *filesystem;
         KeypadHal *keypad;
+        LoggerHal *logger;
     };
 
 };
