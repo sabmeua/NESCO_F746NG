@@ -1,7 +1,7 @@
 #ifndef NESCO_HAL_MBED_FILESYSTEM_H
 #define NESCO_HAL_MBED_FILESYSTEM_H
 
-#include "nesco/hal/include/Filesystem.h"
+#include "nesco/hal/include/FilesystemHal.h"
 
 #include "mbed.h"
 #include "BlockDevice.h"

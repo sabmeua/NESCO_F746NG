@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <fstream>
 
-#include "hal/include/Filesystem.h"
+#include "hal/include/FilesystemHal.h"
 
 namespace nesco::hal
 {
