@@ -1,7 +1,8 @@
 #ifndef NESCO_CARTRIDGE_H
 #define NESCO_CARTRIDGE_H
 
-#include <EmuDevice.h>
+#include "EmuDevice.h"
+#include "Rom.h"
 
 namespace nesco::core
 {
@@ -19,11 +20,12 @@ namespace nesco::core
 
         uint8_t mirroingMode() { return header[6] & 0x01; }
 
+        Rom *progRom;
+        Rom *charRom;
+
     private:
         EmuDevice &dev;
         uint8_t header[INES_HEADER_SIZE];
-        uint8_t *progRom;
-        uint8_t *charRom;
         uint8_t mapperNo;
 
         uint8_t progPageNum() { return header[4]; }

@@ -8,7 +8,8 @@ namespace nesco::core
     class Rom
     {
     public:
-        Rom(uint16_t size);
+        Rom(uint16_t _size);
+        Rom(uint16_t _size, uint8_t *_mem) : size(_size), mem(_mem) {}
         ~Rom();
         uint8_t read(uint16_t addr);
 

@@ -4,12 +4,8 @@ namespace nesco::core
 {
     Cartridge::~Cartridge()
     {
-        if (progRom) {
-            delete progRom;
-        }
-        if (charRom) {
-            delete charRom;
-        }
+        delete progRom;
+        delete charRom;
     }
     
     bool Cartridge::parse(const char *path)
@@ -28,14 +24,16 @@ namespace nesco::core
         if (progPageNum == 0) {
             return false;
         }
-        progRom = new uint8_t[INES_PROG_PAGE_SIZE * progPageNum];
-        dev.filesystem->read(h, progRom, INES_PROG_PAGE_SIZE * progPageNum);
+        uint8_t *prom = new uint8_t[INES_PROG_PAGE_SIZE * progPageNum];
+        dev.filesystem->read(h, prom, INES_PROG_PAGE_SIZE * progPageNum);
+        progRom = new Rom(INES_PROG_PAGE_SIZE * progPageNum, prom);
 
         // Check size of Character ROM
         uint8_t charPageNum = header[5];
         if (charPageNum > 0) {
-            charRom = new uint8_t[INES_CHAR_PAGE_SIZE * charPageNum];
-            dev.filesystem->read(h, charRom, INES_CHAR_PAGE_SIZE * charPageNum);
+            uint8_t *crom = new uint8_t[INES_CHAR_PAGE_SIZE * charPageNum];
+            dev.filesystem->read(h, crom, INES_CHAR_PAGE_SIZE * charPageNum);
+            charRom = new Rom(INES_CHAR_PAGE_SIZE * charPageNum, crom);
         }
 
         // Check TV system is NTSC
