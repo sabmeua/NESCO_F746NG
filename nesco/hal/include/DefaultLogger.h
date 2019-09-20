@@ -16,18 +16,7 @@ namespace nesco::hal
     class DefaultLogger
     {
     public:
-        static void puts(LogLevel lv, ...) {
-            if (lv < logLv) {
-                return;
-            }
-            printf("%s [%s] ", getTimestamp(), logLvStr[lv]);
-            va_list vargs;
-            va_start(vargs, lv);
-            char *msg = va_arg(vargs, char *);
-            vprintf(msg, vargs);
-            va_end(vargs);
-            printf("\n");
-        }
+        static void puts(LogLevel lv, ...);
 
     protected:
         static const char * const logLvStr[];
