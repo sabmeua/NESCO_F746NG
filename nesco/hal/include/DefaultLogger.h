@@ -4,11 +4,16 @@
 #include <cstdio>
 #include <cstdarg>
 
-#include "nesco/hal/include/LoggerHal.h"
-
 namespace nesco::hal
 {
-    class DefaultLogger : public LoggerHal
+    enum LogLevel {
+        LogLvError,
+        LogLvWarning,
+        LogLvInfo,
+        LogLvDebug
+    };
+
+    class DefaultLogger
     {
     public:
         static void puts(LogLevel lv, ...) {
@@ -22,6 +27,13 @@ namespace nesco::hal
             vprintf(msg, vargs);
             va_end(vargs);
             printf("\n");
+        }
+
+    protected:
+        static const char * const logLvStr[];
+        static char logLv;
+        static const char *getTimestamp() {
+            return "##";
         }
     };
 };
