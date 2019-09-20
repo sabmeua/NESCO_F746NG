@@ -1,8 +1,12 @@
 #ifndef NESCO_CORE_MAPPER_H
 #define NESCO_CORE_MAPPER_H
 
+#include "Cartridge.h"
+
 namespace nesco::core
 {
+    class Cartridge;
+
     class Mapper
     {
     public:
@@ -13,8 +17,11 @@ namespace nesco::core
     class Mapper0 : public Mapper
     {
     public:
-        virtual uint8_t read(uint16_t addr) { return 0; }
-        virtual void write(uint16_t addr, uint8_t data) {}
+        Mapper0(Cartridge *cart) : cartridge(cart) {}
+        virtual uint8_t read(uint16_t addr);
+        virtual void write(uint16_t addr, uint8_t data);
+    private:
+        Cartridge *cartridge;
     };
 };
 

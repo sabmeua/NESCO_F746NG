@@ -59,7 +59,8 @@ namespace nesco::core
         // Check mapper number
         uint8_t mapperNo = ((header[6] & 0xF0) >> 4) | (header[7] & 0xF0);
         LOG_INFO("## mapper No. = %d", mapperNo);
-        mapper = new Mapper0();
+
+        mapper = new Mapper0(this);
 
         LOG_INFO("## name table mirroring mode = %d", mirroingMode());
 

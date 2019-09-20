@@ -11,6 +11,8 @@ namespace nesco::core
     #define INES_PROG_PAGE_SIZE 0x4000  // 16KB
     #define INES_CHAR_PAGE_SIZE 0x2000  // 8KB
 
+    class Mapper;
+
     class Cartridge
     {
     public:
@@ -25,6 +27,8 @@ namespace nesco::core
         void write(uint16_t addr, uint8_t data);
 
     private:
+        friend class Mapper0;
+
         EmuDevice &dev;
         uint8_t header[INES_HEADER_SIZE];
 
