@@ -13,7 +13,7 @@ namespace nesco::hal
 
     void DefaultLogger::puts(LogLevel lv, ...)
     {
-        if (lv < logLv) {
+        if (lv > logLv) {
             return;
         }
         printf("%s [%s] ", getTimestamp(), logLvStr[lv]);
