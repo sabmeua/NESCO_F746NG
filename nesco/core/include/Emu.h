@@ -19,7 +19,7 @@ namespace nesco::core
     
         void run();
         void reset();
-        void load(Cartridge *_catridge);
+        void loadCartridge(Cartridge *catridge);
 
     private:
         EmuDevice &dev;
@@ -31,7 +31,6 @@ namespace nesco::core
         PpuBus *ppubus;
         Ram *ram;
         Dma *dma;
-        Cartridge *cartridge;
     };
 };
 

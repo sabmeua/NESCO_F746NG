@@ -12,7 +12,7 @@ int main()
     Emu *emu = new Emu(dev);
     Cartridge *cart = new Cartridge(dev);
     cart->parse("sample/helloworld.nes");
-    emu->load(cart);
+    emu->loadCartridge(cart);
     emu->reset();
     emu->run();
     LOG_DEBUG("Stop NESCO *******************");

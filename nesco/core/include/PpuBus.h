@@ -2,6 +2,7 @@
 #define NESCO_CORE_PPU_BUS_H
 
 #include "Ram.h"
+#include "Cartridge.h"
 
 namespace nesco::core
 {
@@ -9,6 +10,13 @@ namespace nesco::core
     {
     public:
         PpuBus();
+
+        void loadCartridge(Cartridge *_cartridge) {
+            cartridge = _cartridge;
+        }
+
+    private:
+        Cartridge *cartridge;
     };
 };
 

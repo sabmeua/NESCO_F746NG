@@ -23,8 +23,8 @@ namespace nesco::core
             return ppu->readRegister((addr % 8) | 0x2000);
         } else if (addr == 0x4016 || addr == 0x4017) {  // Pad
 
-        } else {
-            return 0;
+        } else {                        // Program ROM access
+            return cartridge->read(addr);
         }
     }
 
@@ -42,12 +42,12 @@ namespace nesco::core
             ppu->writeRegister((addr % 8) | 0x2000, data);
         } else if (addr == 0x4014) {    // DMA
             exCycle = 514;
-        } else if (addr == 0x4016) {  // Pad
+        } else if (addr == 0x4016) {    // Pad
 
         } else if (addr < 0x4020) {     // APU
             apu->writeRegister(addr, data);
         } else {
-
+            cartridge->write(addr, data);
         }
 
         return exCycle;
