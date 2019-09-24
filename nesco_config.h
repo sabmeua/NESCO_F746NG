@@ -4,8 +4,11 @@
 /****************************
  * Select nesco platform 
  ***************************/
-//#define NESCO_PLATFORM_GLUT
-#define NESCO_PLATFORM_MBED
+#ifdef NOMBED
+    #define NESCO_PLATFORM_GLUT
+#else
+    #define NESCO_PLATFORM_MBED
+#endif
 
 /**
  * Platform dependent provision
@@ -13,6 +16,7 @@
 #if defined NESCO_PLATFORM_GLUT
 
     #include "nesco/device/Glut.h"
+    typedef nesco::device::Glut NescoDevice;
 
 #elif defined NESCO_PLATFORM_MBED
 

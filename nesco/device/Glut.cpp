@@ -1,13 +1,12 @@
-#include <GL/glut.h>
 #include "nesco/device/Glut.h"
 
 namespace nesco::device
 {
-    void EmuDevice_Glut::reset()
+    Glut::Glut()
     {
-    }
-
-    void EmuDevice_Glut::load(const char *path)
-    {
+        display = new DisplayGlut();
+        filesystem = new DefaultFilesystem();
+        sound = new SoundGlut();
+        keypad = new KeypadGlut();
     }
 };
