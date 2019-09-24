@@ -1,7 +1,7 @@
 #ifndef NESCO_HAL_MBED_FILESYSTEM_H
 #define NESCO_HAL_MBED_FILESYSTEM_H
 
-#include "nesco/hal/include/FilesystemHal.h"
+#include "nesco/hal/include/DefaultFilesystem.h"
 
 #include "mbed.h"
 #include "BlockDevice.h"
@@ -17,17 +17,10 @@
 
 namespace nesco::hal
 {
-    class MbedFilesystem : public FilesystemHal
+    class MbedFilesystem : public DefaultFilesystem
     {
     public:
         void init();
-        NescoFileHandle open(const char *key, const char *mode);
-        bool read(NescoFileHandle h, uint8_t *buff, uint32_t size);
-        bool write(NescoFileHandle h, uint8_t *buff, uint32_t size);
-        bool seek(NescoFileHandle h, uint32_t offset, uint8_t origin);
-        bool readLine(NescoFileHandle h, char *buff);
-        bool writeLine(NescoFileHandle h, const char *buff);
-        void close(NescoFileHandle h);
     };
 };
 

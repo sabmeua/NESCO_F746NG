@@ -1,10 +1,6 @@
 #ifndef NESCO_HAL_DEFAULT_FILESYSTEM_H
 #define NESCO_HAL_DEFAULT_FILESYSTEM_H
 
-#include <string>
-#include <cstdint>
-#include <fstream>
-
 #include "hal/include/FilesystemHal.h"
 
 namespace nesco::hal
