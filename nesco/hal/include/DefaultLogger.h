@@ -7,22 +7,27 @@
 namespace nesco::hal
 {
     enum LogLevel {
+        LogLvFatal,
         LogLvError,
         LogLvWarning,
         LogLvInfo,
-        LogLvDebug
+        LogLvDebug,
+        LogLvTrace
     };
 
     class DefaultLogger
     {
     public:
         static void puts(LogLevel lv, ...);
+        static void setLogLevel(LogLevel lv) {
+            logLv = lv;
+        }
 
     protected:
         static const char * const logLvStr[];
         static char logLv;
         static const char *getTimestamp() {
-            return "##";
+            return "";
         }
     };
 };

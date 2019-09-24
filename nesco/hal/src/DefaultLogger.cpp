@@ -3,10 +3,12 @@
 namespace nesco::hal
 {
     const char * const DefaultLogger::logLvStr[] = {
+        "FATAL",
         "ERROR",
         "WARNING",
         "INFO",
-        "DEBUG"
+        "DEBUG",
+        "TRACE"
     };
 
     char DefaultLogger::logLv = LogLvDebug;
