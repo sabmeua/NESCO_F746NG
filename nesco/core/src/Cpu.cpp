@@ -29,7 +29,7 @@ namespace nesco::core
         }
 
         uint8_t opcode = fetch();
-        LOG_TRACE("<CPU> %5d: op=%2X | PC=%02X SP=%0X", clk, opcode, PC, SP);
+        LOG_TRACE("<CPU> %5d: op=%02X | PC=%04X SP=%02X", clk, opcode, PC, SP);
 
         if (execOpImplied(opcode) ||
             execOpBranch(opcode) ||
