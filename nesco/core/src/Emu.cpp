@@ -54,7 +54,7 @@ namespace nesco::core
 
     void Emu::abort(const char *err)
     {
-        LOG_ERROR(err);
+        LOG_FATAL(err);
         // @ToDo: abort process
         exit(1);
     }
