@@ -30,6 +30,13 @@ namespace nesco::core
     #define SP_BASE         0x00FD
     #define SP_OFFSET       0x0100  // Accessing stack as "SP | SP_OFFSET"
 
+    enum CpuIntType
+    {
+        IntBrk,
+        IntIrq,
+        IntNmi
+    };
+
     enum CpuStatusFlag
     {
         CarryFlag    = 0x01,
@@ -72,6 +79,8 @@ namespace nesco::core
 
         void reset();
         void step(uint16_t clk);
+        void nmi();
+        void irq();
 
     private:
         // Registers
@@ -123,6 +132,8 @@ namespace nesco::core
 
         uint16_t loadAddr(AddressingMode mode);
         bool checkPageCross(uint16_t addr1, uint16_t addr2);
+
+        void interrupt(CpuIntType type);
     };
 
 };

@@ -29,7 +29,7 @@ namespace nesco::core
         }
 
         uint8_t opcode = fetch();
-        LOG_TRACE("<CPU> %5d: op=%02X | PC=%04X SP=%02X", clk, opcode, PC-1, SP);
+        LOG_TRACE("<CPU> %5d: op=%02X | PC=%04X SP=%02X", clk / 3, opcode, PC-1, SP);
 
         if (execOpImplied(opcode) ||
             execOpBranch(opcode) ||
@@ -120,19 +120,8 @@ namespace nesco::core
     {
         switch (static_cast<OpcodeSet_Implied>(opcode)) {
             case BRK:
-            {
-                bool interrupt = P & IrqFlag;
-                PC++;
-                pushWord(PC);
-                setFlag(BreakFlag);
-                push(P);
-                setFlag(IrqFlag);
-                if (!interrupt) {
-                    PC = readWord(IRQ_VECTOR);
-                }
-                PC--;
+                interrupt(IntBrk);
                 break;
-            }
             case PHP:
                 push(P);
                 break;
@@ -644,5 +633,40 @@ namespace nesco::core
     bool Cpu::checkPageCross(uint16_t addr1, uint16_t addr2)
     {
         return (addr1 & 0xFF00) != (addr2 & 0xFF00);
+    }
+
+    void Cpu::interrupt(CpuIntType type)
+    {
+        uint16_t vector = type == IntNmi ? NMI_VECTOR : IRQ_VECTOR;
+
+        if (type != IntNmi && getFlag(IrqFlag)) {
+            return;
+        }
+
+        if (type == IntBrk) {
+            setFlag(BreakFlag);
+            PC++;
+        } else {
+            clearFlag(BreakFlag);
+        }
+
+        pushWord(PC);
+        push(P);
+
+        setFlag(IrqFlag);
+
+        PC = readWord(vector);
+    }
+
+    void Cpu::nmi()
+    {
+        interrupt(IntNmi);
+        skipCycle += 7;
+    }
+
+    void Cpu::irq()
+    {
+        interrupt(IntIrq);
+        skipCycle += 7;
     }
 };
