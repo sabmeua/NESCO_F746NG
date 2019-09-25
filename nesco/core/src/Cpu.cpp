@@ -284,14 +284,52 @@ namespace nesco::core
         if (mode == Immediate1) {
             mode = Immediate;
         }
+        OpcodeSet_00 comm = static_cast<OpcodeSet_00>(opcode & COMMAND_MASK);
 
         // Irregular pattern
         if (opcode == JMP_IND) {
             mode = Indirect;
         }
+
+        switch (mode) {
+            case Accumlator:
+            case ZeropageY:
+            case AbsoluteY:
+            case IndirectX:
+            case IndirectY:
+                return false;
+            case Immediate:
+                if (comm == JMP || comm == STY) {
+                    return false;
+                }
+                mode = Immediate;
+                break;
+            case Zeropage:
+                if (comm == BIT || comm == JMP) {
+                    return false;
+                }
+                break;
+            case ZeropageX:
+                if (comm != STY && comm == LDY) {
+                    return false;
+                }
+                break;
+            case AbsoluteX:
+                if (comm != LDY) {
+                    return false;
+                }
+                break;
+            case Indirect:
+                if (comm != JMP) {
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+
         uint16_t addr = loadAddr(mode);
 
-        OpcodeSet_00 comm = static_cast<OpcodeSet_00>(opcode & COMMAND_MASK);
         switch (comm) {
             case BIT:
             {
@@ -342,10 +380,25 @@ namespace nesco::core
         if (mode == Immediate2) {
             mode = Immediate;
         }
+        OpcodeSet_01 comm = static_cast<OpcodeSet_01>(opcode & COMMAND_MASK);
+
+
+        switch (mode) {
+            case Accumlator:
+            case ZeropageY:
+            case Indirect:
+                return false;
+            case Immediate:
+                if (comm == STA) {
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
 
         uint16_t addr = loadAddr(mode);
 
-        OpcodeSet_01 comm = static_cast<OpcodeSet_01>(opcode & COMMAND_MASK);
         switch (comm) {
             case ORA:
                 A |= read(addr);
@@ -410,6 +463,7 @@ namespace nesco::core
         if (mode == Immediate1) {
             mode = Immediate;
         }
+        OpcodeSet_10 comm = static_cast<OpcodeSet_10>(opcode & COMMAND_MASK);
 
         // irregular pattern
         if (opcode == LDX_ABS_Y) {
@@ -418,9 +472,43 @@ namespace nesco::core
             mode = ZeropageY;
         }
 
+        switch (mode) {
+            case Indirect:
+            case IndirectX:
+            case IndirectY:
+                return false;
+            case Accumlator:
+                if (comm == STX || comm == LDX || comm == DEC || comm == INC) {
+                    return false;
+                }
+                break;
+            case Immediate:
+                if (comm != LDX) {
+                    return false;
+                }
+                break;
+            case AbsoluteX:
+            case ZeropageX:
+                if (comm == STX || comm == LDX) {
+                    return false;
+                }
+                break;
+            case ZeropageY:
+                if (comm != STX && comm != LDX) {
+                    return false;
+                }
+                break;
+            case AbsoluteY:
+                if (comm != LDX && comm != DEC && comm != INC) {
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+
         uint16_t addr = loadAddr(mode);
 
-        OpcodeSet_10 comm = static_cast<OpcodeSet_10>(opcode & COMMAND_MASK);
         switch (comm) {
             case ASL:
             case ROL:
