@@ -19,7 +19,7 @@ namespace nesco::core
         A = X = Y = 0;
         P = INITIAL_STATUS;
         SP = SP_BASE;
-        PC = RESET_VECTOR;
+        PC = readWord(RESET_VECTOR);
     }
 
     void Cpu::step(uint16_t clk)
@@ -29,7 +29,7 @@ namespace nesco::core
         }
 
         uint8_t opcode = fetch();
-        LOG_TRACE("<CPU> %5d: op=%02X | PC=%04X SP=%02X", clk, opcode, PC, SP);
+        LOG_TRACE("<CPU> %5d: op=%02X | PC=%04X SP=%02X", clk, opcode, PC-1, SP);
 
         if (execOpImplied(opcode) ||
             execOpBranch(opcode) ||
