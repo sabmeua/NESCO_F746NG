@@ -3,9 +3,12 @@
 
 #include <cstdint>
 #include "CpuBus.h"
+#include "Emu.h"
 
 namespace nesco::core
 {
+    class Emu;
+
     /**
      * Memory map
      *

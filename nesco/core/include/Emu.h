@@ -2,6 +2,7 @@
 #define NESCO_CORE_EMU_H
 
 #include <cstdint>
+#include <stdlib.h>
 
 #include "Cpu.h"
 #include "Ppu.h"
@@ -13,6 +14,8 @@
 
 namespace nesco::core
 {
+    class Cpu;
+
     class Emu
     {
     public:
@@ -22,6 +25,8 @@ namespace nesco::core
         void run();
         void reset();
         void loadCartridge(Cartridge *catridge);
+
+        static void abort(const char *err);
 
     private:
         uint16_t clk;

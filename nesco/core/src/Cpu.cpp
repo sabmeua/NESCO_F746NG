@@ -39,7 +39,7 @@ namespace nesco::core
         {
             skipCycle += OpCycles[opcode];
         } else {
-            // implement! abort & logging
+            Emu::abort("Invalid opcode");
         }
     }
 

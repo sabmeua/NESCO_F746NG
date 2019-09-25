@@ -1,4 +1,5 @@
 #include "Emu.h"
+#include "nesco_logger.h"
 
 namespace nesco::core
 {
@@ -49,5 +50,12 @@ namespace nesco::core
     {
         cpubus->loadCartridge(cartridge);
         ppubus->loadCartridge(cartridge);
+    }
+
+    void Emu::abort(const char *err)
+    {
+        LOG_ERROR(err);
+        // @ToDo: abort process
+        exit(1);
     }
 };
