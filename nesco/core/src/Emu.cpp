@@ -26,10 +26,20 @@ namespace nesco::core
     void Emu::run()
     {
         reset();
+        while (true) {
+            if (clk % 3 == 0) {
+                cpu->step(clk);
+            }
+            ppu->step(clk);
+            if (++clk == 0xFFFF) {
+                clk = 0;
+            }
+        }
     }
 
     void Emu::reset()
     {
+        clk = 0;
         dev.reset();
         cpu->reset();
         ppu->reset();

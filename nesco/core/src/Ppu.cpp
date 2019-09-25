@@ -34,7 +34,7 @@ namespace nesco::core
         cycle = scanline = 0;
     }
 
-    void Ppu::step()
+    void Ppu::step(uint16_t clk)
     {
         if (scanline <= LineState.PreRender) {
 

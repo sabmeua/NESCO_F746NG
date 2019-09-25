@@ -68,7 +68,7 @@ namespace nesco::core
         ~Cpu();
 
         void reset();
-        void step();
+        void step(uint16_t clk);
 
     private:
         // Registers

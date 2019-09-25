@@ -1,6 +1,8 @@
 #ifndef NESCO_CORE_EMU_H
 #define NESCO_CORE_EMU_H
 
+#include <cstdint>
+
 #include "Cpu.h"
 #include "Ppu.h"
 #include "Apu.h"
@@ -22,6 +24,7 @@ namespace nesco::core
         void loadCartridge(Cartridge *catridge);
 
     private:
+        uint16_t clk;
         EmuDevice &dev;
 
         Cpu *cpu;

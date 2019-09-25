@@ -8,6 +8,7 @@ using namespace nesco::core;
 
 int main()
 {
+    Logger::setLogLevel(LogLvTrace);
     LOG_DEBUG("Start NESCO ******************");
     Emu *emu = new Emu(dev);
     Cartridge *cart = new Cartridge(dev);

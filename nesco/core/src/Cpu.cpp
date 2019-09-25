@@ -1,5 +1,6 @@
 #include "Cpu.h"
 #include "CpuOpcodes.h"
+#include "nesco_logger.h"
 
 namespace nesco::core
 {
@@ -21,13 +22,14 @@ namespace nesco::core
         PC = RESET_VECTOR;
     }
 
-    void Cpu::step()
+    void Cpu::step(uint16_t clk)
     {
         if (skipCycle-- > 0) {
             return;
         }
 
         uint8_t opcode = fetch();
+        LOG_TRACE("<CPU> %5d: op=%2X | PC=%02X SP=%0X", clk, opcode, PC, SP);
 
         if (execOpImplied(opcode) ||
             execOpBranch(opcode) ||
