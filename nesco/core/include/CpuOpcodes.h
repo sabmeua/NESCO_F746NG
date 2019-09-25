@@ -75,7 +75,7 @@ namespace nesco::core
         ORA = 0x00,     // A := A or {adr}
         AND = 0x20,     // A := A and {adr}
         EOR = 0x40,     // A := A exor {adr}
-        ADC = 0x60,     // A := A + {adr}
+        OP_ADC = 0x60,  // A := A + {adr}   // Conflict with ADC module in mbed so rename this.
         STA = 0x80,     // {adr} := A
         LDA = 0xA0,     // A := {adr}
         CMP = 0xC0,     // A - {adr}

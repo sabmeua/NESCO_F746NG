@@ -359,7 +359,7 @@ namespace nesco::core
                 A ^= read(addr);
                 setFlagNZ(A);
                 break;
-            case ADC:
+            case OP_ADC:
             {
                 uint8_t data = read(addr);
                 uint16_t sum = A + data + getFlag(CarryFlag);
