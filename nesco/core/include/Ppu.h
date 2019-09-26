@@ -60,7 +60,7 @@ namespace nesco::core
      *
      */
 
-    typedef struct st_colors {
+    typedef struct {
         uint8_t r;
         uint8_t g;
         uint8_t b;
@@ -68,15 +68,19 @@ namespace nesco::core
 
     const struct {
         int PreRender = 0;
-        int Render = 240;
+        int RenderStart = 1;
+        int RenderEnd = 240;
         int PostRender = 241;
-        int VBlank = 261;
+        int VBlankStart = 242;
+        int VBlankEnd = 261;
         int LineEnd = 262;
     } LineState;
 
     const struct {
-        int Frame = 255;
-        int HBlank = 340;
+        int FrameStart = 0;
+        int FrameEnd = 255;
+        int HBlankStart = 256;
+        int HBlankEnd = 340;
         int CycleEnd = 341;
     } CycleState;
 
@@ -85,6 +89,8 @@ namespace nesco::core
         SpriteZeroHitFlag = 0x40,
         SpriteOverflowFlag = 0x20,
     };
+
+    #define SPRITE_NUMS 0x100
 
     class Ppu
     {
@@ -161,6 +167,12 @@ namespace nesco::core
         bool getFlag(PpuStatusFlag flag);
         bool isVBlank();
 
+        void setSprite();
+        void setBackground();
+
+        uint16_t patternTableAddr() {
+            return Register.name.PPUCTRL & 0x08 ? 0x1000 : 0x0000;
+        }
     };
 };
 #endif

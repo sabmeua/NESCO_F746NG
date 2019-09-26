@@ -39,14 +39,18 @@ namespace nesco::core
     void Ppu::step(uint16_t clk)
     {
         if (scanline <= LineState.PreRender) {
-        } else if (scanline <= LineState.Render) {
-            if (cycle <= CycleState.Frame) {
-
-            } else if (cycle <= CycleState.HBlank) {
+            setSprite();
+        } else if (scanline <= LineState.RenderEnd) {
+            if (cycle <= CycleState.FrameEnd) {
+                if (scanline % 8 == 0) {
+                    setBackground();
+                }
+            } else if (cycle <= CycleState.HBlankEnd) {
 
             }
         } else if (scanline <= LineState.PostRender) {
-        } else if (scanline <= LineState.VBlank) {
+        } else if (scanline == LineState.VBlankStart) {
+        } else if (scanline <= LineState.VBlankEnd) {
         } else {
             Emu::abort("Invalid render state");
         }
@@ -87,5 +91,16 @@ namespace nesco::core
     bool Ppu::isVBlank()
     {
         return getFlag(VBlankFlag);
+    }
+
+    void Ppu::setSprite()
+    {
+         uint16_t ptnAddrBase = patternTableAddr();
+         for (int i = 0; i < SPRITE_NUMS; i += 4) {
+         }
+    }
+
+    void Ppu::setBackground()
+    {
     }
 }
