@@ -107,6 +107,7 @@ namespace nesco::core
         bool execOp00(uint8_t opcode);
         bool execOp01(uint8_t opcode);
         bool execOp10(uint8_t opcode);
+        bool execOpUnofficial(uint8_t opcode);
 
         // Stack operations
         void push(uint8_t value);

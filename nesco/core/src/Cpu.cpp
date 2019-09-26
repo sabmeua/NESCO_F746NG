@@ -35,7 +35,8 @@ namespace nesco::core
             execOpBranch(opcode) ||
             execOp00(opcode) ||
             execOp01(opcode) ||
-            execOp10(opcode))
+            execOp10(opcode) ||
+            execOpUnofficial(opcode))
         {
             skipCycle += OpCycles[opcode];
         } else {
@@ -564,6 +565,120 @@ namespace nesco::core
                 return false;
         }
 
+        return true;
+    }
+
+    bool Cpu::execOpUnofficial(uint8_t opcode)
+    {
+        // @ToDo: Implement unofficial opcodes
+        // @See: http://www.oxyron.de/html/opcodes02.html
+        switch (opcode) {
+            // SLO {adr}:={adr}*2 A:=A or {adr}
+            case 0x07:  // Immediate
+            case 0x17:  // Zeropage
+            case 0x03:  // ZeropageY
+            case 0x13:  // IndirectX
+            case 0x0F:  // IndirectY
+            case 0x1F:  // Absolute
+            case 0x1B:  // AbsoluteX
+                break;
+            // RLA {adr}:={adr}rol A:=A and {adr}
+            case 0x27:  // Immediate
+            case 0x37:  // Zeropage
+            case 0x23:  // ZeropageY
+            case 0x33:  // IndirectX
+            case 0x2F:  // IndirectY
+            case 0x3F:  // Absolute
+            case 0x3B:  // AbsoluteX
+                break;
+            // SRE {adr}:={adr}/2 A:=A exor {adr}
+            case 0x47:  // Immediate
+            case 0x57:  // Zeropage
+            case 0x43:  // ZeropageY
+            case 0x53:  // IndirectX
+            case 0x4F:  // IndirectY
+            case 0x5F:  // Absolute
+            case 0x5B:  // AbsoluteX
+                break;
+            // RRA {adr}:={adr}ror A:=A adc {adr}
+            case 0x67:  // Immediate
+            case 0x77:  // Zeropage
+            case 0x63:  // ZeropageY
+            case 0x73:  // IndirectX
+            case 0x6F:  // IndirectY
+            case 0x7F:  // Absolute
+            case 0x7B:  // AbsoluteX
+                break;
+            // SAX A,X:={adr}
+            case 0x87:  // Immediate
+            case 0x97:  // ZeropageX
+            case 0x83:  // ZeropageY
+            case 0x8F:  // IndirectY
+                break;
+            // LAX A,X:={adr}
+            case 0xA7:  // Immediate
+            case 0xB7:  // ZeropageX
+            case 0xA3:  // ZeropageY
+            case 0xB3:  // IndirectX
+            case 0xAF:  // IndirectY
+            case 0xBF:  // AbsoluteX
+                break;
+            // DCP {adr}:={adr}-1 A-{adr}
+            case 0xC7:  // Immediate
+            case 0xD7:  // Zeropage
+            case 0xC3:  // ZeropageY
+            case 0xD3:  // IndirectX
+            case 0xCF:  // IndirectY
+            case 0xDF:  // Absolute
+            case 0xDB:  // AbsoluteX
+                break;
+            // ISC {adr}:={adr}+1 A:=A-{adr}
+            case 0xE7:  // Immediate
+            case 0xF7:  // Zeropage
+            case 0xE3:  // ZeropageY
+            case 0xF3:  // IndirectX
+            case 0xEF:  // IndirectY
+            case 0xFF:  // Absolute
+            case 0xFB:  // AbsoluteX
+                break;
+            // ANC A:=A&#{imm}
+            case 0x0B:  // Immediate
+            case 0x2B:  // Immediate
+                break;
+            // ALR A:=(A&#{imm})/2
+            case 0x4B:  // Implied
+                break;
+            // ARR A:=(A&#{imm})/2
+            case 0x6B:  // Implied
+                break;
+            // XAA A:=X&#{imm}
+            case 0x8B:  // Immediate
+                break;
+            // LAX A,X:=#{imm}
+            case 0xAB:  // Immediate
+                break;
+            // AXS X:=A&X-#{imm}
+            case 0xCB:  // Implied
+                break;
+            // SBC A:=A-#{imm}
+            case 0xEB:  // Implied
+                break;
+            // AHX {adr}:=A&X&H
+            case 0x93:  // IndirectY
+            case 0x9F:  // AbsoluteY
+            // SHY {adr}:=Y&H
+            case 0x9C:  // AbsoluteX
+                break;
+            // SHX {adr}:=X&H
+            case 0x9E:  // AbsoluteY
+                break;
+            // TAS S:=A&X {adr}:=S&H
+            case 0x9B:  // AbsoluteY
+                break;
+            // LAS A,X,S:={adr}&S
+            case 0xBB:  // AbsoluteX
+                break;
+        }
         return true;
     }
 
