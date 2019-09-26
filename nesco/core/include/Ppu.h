@@ -100,8 +100,8 @@ namespace nesco::core
 
     private:
         PpuBus *bus;
-        uint8_t scanline;
-        uint8_t cycle;
+        uint16_t scanline;
+        uint16_t cycle;
 
         // Registers
         union u_register{

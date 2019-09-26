@@ -1,4 +1,6 @@
 #include "Ppu.h"
+#include "Emu.h"
+#include "nesco_logger.h"
 
 namespace nesco::core
 {
@@ -37,7 +39,6 @@ namespace nesco::core
     void Ppu::step(uint16_t clk)
     {
         if (scanline <= LineState.PreRender) {
-
         } else if (scanline <= LineState.Render) {
             if (cycle <= CycleState.Frame) {
 
@@ -45,15 +46,13 @@ namespace nesco::core
 
             }
         } else if (scanline <= LineState.PostRender) {
-
         } else if (scanline <= LineState.VBlank) {
-
         } else {
-            // @ToDo: implement Abort
+            Emu::abort("Invalid render state");
         }
 
-        if (cycle++ >= CycleState.CycleEnd) {
-            if (scanline++ > LineState.LineEnd) {
+        if (++cycle >= CycleState.CycleEnd) {
+            if (++scanline >= LineState.LineEnd) {
                 scanline = 0;
             }
             cycle = 0;
