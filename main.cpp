@@ -14,7 +14,6 @@ int main()
     Cartridge *cart = new Cartridge(dev);
     cart->parse("sample/helloworld.nes");
     emu->loadCartridge(cart);
-    emu->reset();
     emu->run();
     LOG_DEBUG("Stop NESCO *******************");
     return 0;
