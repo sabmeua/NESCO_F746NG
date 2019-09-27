@@ -9,7 +9,7 @@ namespace nesco::core
         delete charRom;
     }
     
-    bool Cartridge::parse(const char *path)
+    bool Cartridge::loadInes(EmuDevice &dev, const char *path)
     {
         LOG_INFO("load cartridge file : %s", path);
 

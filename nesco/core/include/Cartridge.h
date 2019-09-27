@@ -16,9 +16,8 @@ namespace nesco::core
     class Cartridge
     {
     public:
-        bool parse(const char *path);
+        bool loadInes(EmuDevice &dev, const char *path);
 
-        Cartridge(EmuDevice &_dev) : dev(_dev) {}
         ~Cartridge();
 
         uint8_t mirroingMode() { return header[6] & 0x01; }
@@ -29,7 +28,6 @@ namespace nesco::core
     private:
         friend class Mapper0;
 
-        EmuDevice &dev;
         uint8_t header[INES_HEADER_SIZE];
 
         Mapper *mapper;

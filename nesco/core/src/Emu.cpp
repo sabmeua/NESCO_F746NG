@@ -3,7 +3,7 @@
 
 namespace nesco::core
 {
-    Emu::Emu(EmuDevice &_dev) : dev(_dev)
+    Emu::Emu()
     {
         ram = new Ram(0x800);
         ppubus = new PpuBus();
@@ -41,7 +41,6 @@ namespace nesco::core
     void Emu::reset()
     {
         clk = 0;
-        dev.reset();
         cpu->reset();
         ppu->reset();
     }

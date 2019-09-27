@@ -19,7 +19,7 @@ namespace nesco::core
     class Emu
     {
     public:
-        Emu(EmuDevice &_dev);
+        Emu();
         ~Emu();
     
         void run();
@@ -30,7 +30,6 @@ namespace nesco::core
 
     private:
         uint16_t clk;
-        EmuDevice &dev;
 
         Cpu *cpu;
         Ppu *ppu;
