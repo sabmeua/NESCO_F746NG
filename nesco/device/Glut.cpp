@@ -1,4 +1,5 @@
 #include "nesco/device/Glut.h"
+#include "nesco_logger.h"
 
 extern nesco::device::Glut dev;
 
@@ -10,9 +11,40 @@ namespace nesco::device
 
     void input(unsigned char code, int x, int y)
     {
+        switch(code) {
+            case 0x1b:
+                LOG_INFO("Normaly exit");
+                exit(0);
+            case ',':
+                LOG_TRACE("Press B");
+                break;
+            case '.':
+                LOG_TRACE("Press A");
+                break;
+            case 'w':
+                LOG_TRACE("Press Up");
+                break;
+            case 'a':
+                LOG_TRACE("Press Left");
+                break;
+            case 's':
+                LOG_TRACE("Press Down");
+                break;
+            case 'd':
+                LOG_TRACE("Press Right");
+                break;
+            case '@':
+                LOG_TRACE("Press Start");
+                break;
+            case '[':
+                LOG_TRACE("Press Select");
+                break;
+            default:
+                break;
+        }
     }
 
-    void idle()
+    void tick()
     {
         dev.callEmuMain();
     }
@@ -38,13 +70,16 @@ namespace nesco::device
         glPixelZoom(1, -1);
         glutKeyboardFunc(input);
         glClearColor(1, 1, 1, 1);
-        glutIdleFunc(idle);
-        //glutTimerFunc(1, timer, 0);
+#if 1
+        glutIdleFunc(tick);
+#else
+        glutTimerFunc(6, tick, 0);
+#endif
         glutMainLoop();
     }
 
     void Glut::callEmuMain()
     {
-        callback[EmuMain]();   
+        callback[EmuMain]();
     }
 };

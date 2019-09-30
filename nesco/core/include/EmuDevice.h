@@ -36,7 +36,7 @@ namespace nesco::core
             callback[type] = _func;
         }
 
-        void main() {}
+        virtual void main() = 0;
     protected:
         std::function<void(void)> callback[EmuCallbackTypeNum];
     };
