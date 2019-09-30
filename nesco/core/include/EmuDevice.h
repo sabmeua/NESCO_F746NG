@@ -13,7 +13,7 @@ using namespace nesco::hal;
 namespace nesco::core
 {
     enum EmuCallbackType {
-        EmuMainLoop = 0,
+        EmuMain = 0,
         EmuCallbackTypeNum,
     };
 
@@ -36,11 +36,7 @@ namespace nesco::core
             callback[type] = _func;
         }
 
-        void main() {
-            while(true) {
-                callback[EmuMainLoop]();
-            }
-        }
+        void main() {}
     protected:
         std::function<void(void)> callback[EmuCallbackTypeNum];
     };

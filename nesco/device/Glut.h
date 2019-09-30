@@ -32,6 +32,8 @@ namespace nesco::device
     {
     public:
         Glut();
+        void main();
+        void callEmuMain();
     };
 };
 
