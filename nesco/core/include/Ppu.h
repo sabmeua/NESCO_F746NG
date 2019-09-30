@@ -61,6 +61,11 @@ namespace nesco::core
      */
 
     typedef struct {
+        uint16_t x;
+        uint16_t y;
+    } Pos;
+
+    typedef struct {
         uint8_t r;
         uint8_t g;
         uint8_t b;
@@ -172,6 +177,10 @@ namespace nesco::core
 
         uint16_t patternTableAddr() {
             return Register.name.PPUCTRL & 0x08 ? 0x1000 : 0x0000;
+        }
+
+        Pos tile() {
+            return {uint16_t(scanline / 8), uint16_t(cycle / 8)};
         }
     };
 };
