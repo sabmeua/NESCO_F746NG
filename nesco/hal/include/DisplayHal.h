@@ -7,6 +7,7 @@ namespace nesco::hal
     {
     public:
         virtual void init() = 0;
+        virtual void redraw() = 0;
     };
 };
 

@@ -12,6 +12,16 @@ namespace nesco::core
         apu = new Apu();
         cpubus = new CpuBus(ram, ppu, apu, dma);
         cpu = new Cpu(cpubus);
+
+        dev.setCallback(EmuMain, [&](void) {
+            if (clk % 3 == 0) {
+                cpu->step(clk);
+            }
+            ppu->step(clk);
+            if (++clk == 0xFFFF) {
+                clk = 0;
+            }
+        });
     }
 
     Emu::~Emu()
@@ -27,15 +37,7 @@ namespace nesco::core
     void Emu::run()
     {
         reset();
-        while (true) {
-            if (clk % 3 == 0) {
-                cpu->step(clk);
-            }
-            ppu->step(clk);
-            if (++clk == 0xFFFF) {
-                clk = 0;
-            }
-        }
+        dev.main();
     }
 
     void Emu::reset()
