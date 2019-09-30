@@ -2,7 +2,6 @@
 #include "nesco_logger.h"
 
 extern nesco::device::Glut dev;
-unsigned char image[240][256][3];
 
 namespace nesco::device
 {
@@ -74,7 +73,7 @@ namespace nesco::device
         keypad = new KeypadGlut();
     }
 
-    void Glut::reset()
+    void Glut::init()
     {
         int *argc;
         char **argv;
@@ -84,10 +83,7 @@ namespace nesco::device
         sound->init();
         filesystem->init();
         keypad->init();
-    }
 
-    void Glut::main()
-    {
         glutDisplayFunc(draw);
         glutKeyboardFunc(input);
 #if 1
@@ -95,6 +91,14 @@ namespace nesco::device
 #else
         glutTimerFunc(6, tick, 0);
 #endif
+    }
+
+    void Glut::reset()
+    {
+    }
+
+    void Glut::main()
+    {
         glutMainLoop();
     }
 

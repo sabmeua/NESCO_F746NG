@@ -18,6 +18,8 @@ namespace nesco::device
     protected:
         const int width = 256;
         const int height = 240;
+
+        unsigned char image[240][256][3];
     };
 
     class SoundGlut : public SoundHal
@@ -36,8 +38,10 @@ namespace nesco::device
     {
     public:
         Glut();
+        void init();
         void reset();
         void main();
+
         void callEmuMain();
         void redraw();
     };
