@@ -51,6 +51,21 @@ namespace nesco::device
         dev.callEmuMain();
     }
 
+    void DisplayGlut::init()
+    {
+        glutInitWindowSize(width, height);
+        glutInitDisplayMode(GLUT_RGBA);
+        glutCreateWindow("nesco");
+        glClearColor(1, 1, 1, 1);
+        glPixelZoom(1, -1);
+    }
+
+    void DisplayGlut::redraw()
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDrawPixels(width, height, GL_RGB, GL_UNSIGNED_BYTE, image);
+    }
+
     Glut::Glut()
     {
         display = new DisplayGlut();
@@ -59,19 +74,22 @@ namespace nesco::device
         keypad = new KeypadGlut();
     }
 
-    void Glut::main()
+    void Glut::reset()
     {
         int *argc;
         char **argv;
-
         glutInit(argc, argv);
-        glutInitWindowSize(256, 240);
-        glutInitDisplayMode(GLUT_RGBA);
-        glutCreateWindow("nesco");
+
+        display->init();
+        sound->init();
+        filesystem->init();
+        keypad->init();
+    }
+
+    void Glut::main()
+    {
         glutDisplayFunc(draw);
-        glPixelZoom(1, -1);
         glutKeyboardFunc(input);
-        glClearColor(1, 1, 1, 1);
 #if 1
         glutIdleFunc(tick);
 #else
@@ -87,8 +105,7 @@ namespace nesco::device
 
     void Glut::redraw()
     {
-        glClear(GL_COLOR_BUFFER_BIT);
-        glDrawPixels(256, 240, GL_RGB, GL_UNSIGNED_BYTE, image);
+        display->redraw();
         glFlush();
     }
 };

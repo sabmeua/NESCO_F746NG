@@ -13,7 +13,11 @@ namespace nesco::device
     class DisplayGlut : public DisplayHal
     {
     public:
-        void init() {}
+        void init();
+        void redraw();
+    protected:
+        const int width = 256;
+        const int height = 240;
     };
 
     class SoundGlut : public SoundHal
@@ -32,6 +36,7 @@ namespace nesco::device
     {
     public:
         Glut();
+        void reset();
         void main();
         void callEmuMain();
         void redraw();
