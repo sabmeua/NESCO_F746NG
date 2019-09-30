@@ -12,6 +12,11 @@ using namespace nesco::hal;
 
 namespace nesco::core
 {
+    enum EmuCallbackType {
+        EmuMainLoop = 0,
+        EmuCallbackTypeNum,
+    };
+
     class EmuDevice
     {
     public:
@@ -27,18 +32,17 @@ namespace nesco::core
         FilesystemHal *filesystem;
         KeypadHal *keypad;
 
-        void setCallback(std::function<void(void)> _func) {
-            mainloop = _func;
+        void setCallback(EmuCallbackType type, std::function<void(void)> _func) {
+            callback[type] = _func;
         }
 
         void main() {
-            int i = 0;
-            while(i++ < 100) {
-                mainloop();
+            while(true) {
+                callback[EmuMainLoop]();
             }
         }
     protected:
-        std::function<void(void)> mainloop;
+        std::function<void(void)> callback[EmuCallbackTypeNum];
     };
 
 };

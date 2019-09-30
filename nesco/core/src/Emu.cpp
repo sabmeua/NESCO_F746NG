@@ -12,7 +12,8 @@ namespace nesco::core
         apu = new Apu();
         cpubus = new CpuBus(ram, ppu, apu, dma);
         cpu = new Cpu(cpubus);
-        dev.setCallback([&](void) {
+
+        dev.setCallback(EmuMainLoop, [&](void) {
             if (clk % 3 == 0) {
                 cpu->step(clk);
             }
