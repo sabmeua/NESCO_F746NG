@@ -34,6 +34,7 @@ namespace nesco::device
         Glut();
         void main();
         void callEmuMain();
+        void redraw();
     };
 };
 

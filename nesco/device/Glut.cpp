@@ -2,11 +2,13 @@
 #include "nesco_logger.h"
 
 extern nesco::device::Glut dev;
+unsigned char image[240][256][3];
 
 namespace nesco::device
 {
     void draw()
     {
+        dev.redraw();
     }
 
     void input(unsigned char code, int x, int y)
@@ -81,5 +83,12 @@ namespace nesco::device
     void Glut::callEmuMain()
     {
         callback[EmuMain]();
+    }
+
+    void Glut::redraw()
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDrawPixels(256, 240, GL_RGB, GL_UNSIGNED_BYTE, image);
+        glFlush();
     }
 };
