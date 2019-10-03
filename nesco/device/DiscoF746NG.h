@@ -13,6 +13,7 @@ namespace nesco::device
     {
     public:
         void init() {}
+        void redraw() {}
     };
 
     class SoundDiscoF746NG : public SoundHal
@@ -31,6 +32,9 @@ namespace nesco::device
     {
     public:
         DiscoF746NG();
+        void reset();
+        void init();
+        void main();
     };
 };
 

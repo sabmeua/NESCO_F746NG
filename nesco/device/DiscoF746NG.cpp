@@ -9,4 +9,16 @@ namespace nesco::device
         sound = new SoundDiscoF746NG();
         keypad = new KeypadDiscoF746NG();
     }
+
+    void DiscoF746NG::reset()
+    {
+    }
+
+    void DiscoF746NG::init()
+    {
+    }
+
+    void DiscoF746NG::main()
+    {
+    }
 };
