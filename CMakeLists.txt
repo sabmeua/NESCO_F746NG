@@ -4,7 +4,9 @@ project(nesco_f746ng CXX)
 
 add_executable(nesco.out main.cpp)
 
-target_compile_options(nesco.out PUBLIC -O2 -Wall)
+set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -pg")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -s -DNDEBUG -march=native")
+target_compile_options(nesco.out PUBLIC -Wall)
 
 target_compile_features(nesco.out PUBLIC cxx_std_11)
 

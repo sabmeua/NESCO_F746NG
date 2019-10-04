@@ -24,6 +24,18 @@
             ],
             "group": "build",
             "problemMatcher": []
+        },
+        {
+            "label": "cmake debug",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-GNinja",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DCMAKE_FIND_DEBUG_MODE=1",
+                ".."
+            ],
+            "group": "build"
         }
     ]
 }
