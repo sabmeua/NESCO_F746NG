@@ -94,6 +94,7 @@ namespace nesco::core
         VBlankFlag = 0x80,
         SpriteZeroHitFlag = 0x40,
         SpriteOverflowFlag = 0x20,
+        VRAMAddrIncrementFlag = 0x04,
     };
 
     #define SPRITE_NUMS 0x100
@@ -116,6 +117,9 @@ namespace nesco::core
         uint16_t cycle;
 
         Ram oamData;    // sprite ram that read/write through OAMADDR/OAMDATA register
+
+        uint16_t vramAddr;
+        uint8_t vramAddrByteSel;
 
         // Registers
         union u_register{
@@ -158,8 +162,8 @@ namespace nesco::core
                 uint8_t OAMADDR;    // W:  OAM sprite address register
                 uint8_t OAMDATA;    // RW: OAM sprite data register
                 uint8_t PPUSCROLL;  // W:  BG scroll offset register
-                uint8_t PPUADDR;    // W:  PPU memory address register
-                uint8_t PPUDATA;    // RW: PPU Memory data register
+                uint8_t PPUADDR;    // W:  VRAM address register
+                uint8_t PPUDATA;    // RW: VRAM data register
             } name;
 
             // For access by index (index <- addr % 0x2000)

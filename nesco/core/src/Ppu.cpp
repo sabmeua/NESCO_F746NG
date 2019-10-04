@@ -23,7 +23,7 @@ namespace nesco::core
         {0x99, 0xFF, 0xFC}, {0xDD, 0xDD, 0xDD}, {0x11, 0x11, 0x11}, {0x11, 0x11, 0x11},
     };
 
-    Ppu::Ppu(PpuBus *_ppubus) : bus(_ppubus), oamData(0x100)
+    Ppu::Ppu(PpuBus *_ppubus) : bus(_ppubus), oamData(0x100), vramAddrByteSel(1)
     {
     }
 
@@ -33,7 +33,8 @@ namespace nesco::core
 
     void Ppu::reset()
     {
-        cycle = scanline = 0;
+        vramAddrByteSel = 1;
+        cycle = scanline = vramAddr = 0;
     }
 
     void Ppu::step(uint16_t clk)
@@ -65,18 +66,49 @@ namespace nesco::core
 
     uint8_t Ppu::readRegister(uint16_t addr)
     {
-        if (addr == 0x2004) {
-            Register.name.PPUDATA = oamData.read(Register.name.OAMADDR);
+        switch (addr) {
+            case 0x2004:
+                Register.name.OAMDATA = oamData.read(Register.name.OAMADDR);
+                break;
+            case 0x2007:
+                // @ToDo: read VRAM
+                if (getFlag(VRAMAddrIncrementFlag)) {
+                    vramAddr += 32;
+                } else {
+                    vramAddr += 1;
+                }
+                break;
+            default:
+                break;
         }
         return Register.index[addr % 0x2000];
     }
 
     void Ppu::writeRegister(uint16_t addr, uint8_t data)
     {
+        if (addr == 0x2006) {
+            if (vramAddrByteSel == 0) {
+                vramAddr = (Register.name.PPUADDR << 8)  | data;
+                vramAddrByteSel = 1;
+            } else {
+                vramAddrByteSel = 0;
+            }
+        }
         Register.index[addr % 0x2000] = data;
-        if (addr == 0x2004) {
-            oamData.write(Register.name.OAMADDR, Register.name.OAMDATA);
-            Register.name.OAMADDR++;
+        switch (addr) {
+            case 0x2004:
+                oamData.write(Register.name.OAMADDR, Register.name.OAMDATA);
+                Register.name.OAMADDR++;
+                break;
+            case 0x2007:
+                // @ToDo: write VRAM
+                if (getFlag(VRAMAddrIncrementFlag)) {
+                    vramAddr += 32;
+                } else {
+                    vramAddr += 1;
+                }
+            default:
+                break;
         }
     }
 
