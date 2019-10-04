@@ -23,7 +23,7 @@ namespace nesco::core
         {0x99, 0xFF, 0xFC}, {0xDD, 0xDD, 0xDD}, {0x11, 0x11, 0x11}, {0x11, 0x11, 0x11},
     };
 
-    Ppu::Ppu(PpuBus *_ppubus) : bus(_ppubus)
+    Ppu::Ppu(PpuBus *_ppubus) : bus(_ppubus), oamData(0x100)
     {
     }
 
@@ -65,12 +65,19 @@ namespace nesco::core
 
     uint8_t Ppu::readRegister(uint16_t addr)
     {
+        if (addr == 0x2004) {
+            Register.name.PPUDATA = oamData.read(Register.name.OAMADDR);
+        }
         return Register.index[addr % 0x2000];
     }
 
     void Ppu::writeRegister(uint16_t addr, uint8_t data)
     {
         Register.index[addr % 0x2000] = data;
+        if (addr == 0x2004) {
+            oamData.write(Register.name.OAMADDR, Register.name.OAMDATA);
+            Register.name.OAMADDR++;
+        }
     }
 
     void Ppu::setFlag(PpuStatusFlag flag)

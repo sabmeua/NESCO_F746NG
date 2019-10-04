@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include "PpuBus.h"
+#include "Ram.h"
 
 namespace nesco::core
 {
@@ -113,6 +114,8 @@ namespace nesco::core
         PpuBus *bus;
         uint16_t scanline;
         uint16_t cycle;
+
+        Ram oamData;    // sprite ram that read/write through OAMADDR/OAMDATA register
 
         // Registers
         union u_register{
