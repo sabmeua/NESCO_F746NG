@@ -14,6 +14,16 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "mbed",
+            "type": "shell",
+            "command": "mbed",
+            "args": [
+                "compile"
+            ],
+            "group": "build",
+            "problemMatcher": []
         }
     ]
 }
