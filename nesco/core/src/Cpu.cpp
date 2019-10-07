@@ -24,7 +24,8 @@ namespace nesco::core
 
     void Cpu::step(uint16_t clk)
     {
-        if (skipCycle-- > 0) {
+        if (skipCycle > 0) {
+            skipCycle--;
             return;
         }
 
